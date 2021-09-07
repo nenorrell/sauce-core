@@ -4,6 +4,7 @@ export { Controller } from "./Controller";
 export { Service } from "./Service";
 export { Responses, formatArrayResponse, formatErrorResponse, formatObjectResponse, formatPaginatedResponse } from "./Responses";
 export { Route } from "./routes/Route";
+export { Routes } from "./routes/routes";
 export { RouteParam } from "./routes/RouteParam";
 export { PaginationParams } from "./routes/canned/PaginationParams";
 
