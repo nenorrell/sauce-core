@@ -1,6 +1,6 @@
 {
   "name": "@apollo-api/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Apollo API core functionality",
   "keywords": [
     "Apollo",
@@ -8,8 +8,8 @@
   ],
   "author": "royalewcheese",
   "license": "MIT",
-  "main": "dist/html-generator.js",
-  "types": "dist/html-generator.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
   ],
