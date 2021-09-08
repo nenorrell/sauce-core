@@ -2,7 +2,7 @@ import {green, yellow} from "chalk"
 
 export class Rocket{
     public launch(){
-        `${green(`
+        return `${green(`
        ^
       / \\
      /___\\
