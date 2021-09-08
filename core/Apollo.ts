@@ -12,6 +12,7 @@ export type ApolloType<Extension=ObjectOfAnything> = {
     config :ApolloConfig;
 } & Extension;
 
+export let Apollo :ApolloType;
 
 type ApolloBuild <T> = ApolloType<{}> & {custom ?:T} 
 export const buildApolloObj = <T=ObjectOfAnything>({req, res, next, app, currentRoute, config, custom}:ApolloBuild<T>) :void => {
@@ -31,4 +32,6 @@ export const buildApolloObj = <T=ObjectOfAnything>({req, res, next, app, current
     }
 }
 
-export let Apollo :ApolloType;
+export const getApollo = <Extension=ObjectOfAnything>() :ApolloType<Extension>=>{
+    return Apollo as ApolloType<Extension>;
+}
