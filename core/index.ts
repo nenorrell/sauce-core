@@ -7,6 +7,7 @@ export { Route } from "./routes/Route";
 export { Routes } from "./routes/routes";
 export { RouteParam } from "./routes/RouteParam";
 export { PaginationParams } from "./routes/canned/PaginationParams";
+export { formatError } from "./utility";
 
 /** Types & Interfaces */
 export { ApolloConfig } from "./resources/ApolloConfig"
