@@ -11,7 +11,6 @@ export class Controller{
     protected res = Apollo.res;
     protected next = Apollo.next;
     protected route = Apollo.currentRoute;
-    protected db = Apollo.db;
     protected config = Apollo.config;
 
     constructor(){
