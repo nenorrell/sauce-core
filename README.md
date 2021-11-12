@@ -1,5 +1,7 @@
-For [Apollo API](https://github.com/nenorrell/apollo)
 # Apollo API
+
+<img src="https://imgur.com/zo20SVD.png" alt="drawing" width="500px"/>
+
 Apollo is a RESTful API built on Express.js & Typescript.
 
 It's essentially Express.js with Typescript and a couple of out of the box things built for you such as routing, route param data type enforcement, route policies, etc.
