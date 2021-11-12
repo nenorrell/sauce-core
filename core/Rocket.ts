@@ -1,7 +1,7 @@
-import {green, yellow} from "chalk"
+import {green, yellow} from 'chalk';
 
-export class Rocket{
-    public launch(){
+export class Rocket {
+    public launch() {
         return `${green(`
        ^
       / \\

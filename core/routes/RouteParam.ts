@@ -1,9 +1,9 @@
 export type ParamDataTypes = 'boolean'|'number'|'string'|'object'|'array'|'enum';
 
 /**
- * @class Defines a route param for Apollo to pickup.
+ * Defines a route param for Apollo to pickup.
  * Could be a param in the path, body, or a query param */
-export class RouteParam{
+export class RouteParam {
     public name :string;
     public children :RouteParam[];
     public required :Boolean;
@@ -11,27 +11,27 @@ export class RouteParam{
     public enumValues :Array<string | number | boolean>;
     public description :string;
 
-    public setName(name :string) :RouteParam{
+    public setName(name :string) :RouteParam {
         this.name = name;
         return this;
     }
-    public setChildren(children :Array<RouteParam>) :RouteParam{
+    public setChildren(children :Array<RouteParam>) :RouteParam {
         this.children = children;
         return this;
     }
-    public setRequired(required :Boolean) :RouteParam{
+    public setRequired(required :Boolean) :RouteParam {
         this.required = required;
         return this;
     }
-    public setType(type :ParamDataTypes) :RouteParam{
+    public setType(type :ParamDataTypes) :RouteParam {
         this.type = type;
         return this;
     }
-    public setEnumValues(values :Array<string | number | boolean>) :RouteParam{
+    public setEnumValues(values :Array<string | number | boolean>) :RouteParam {
         this.enumValues = values;
         return this;
     }
-    public setDescription(description :string) :RouteParam{
+    public setDescription(description :string) :RouteParam {
         this.description = description;
         return this;
     }

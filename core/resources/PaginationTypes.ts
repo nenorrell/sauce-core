@@ -16,10 +16,10 @@ export type PaginationQuery = {
 export type PaginationConfig = {
     /**
      * Max pageSize
-     *  @default 25 
+     *  @default 25
      * */
     max ?:number;
-    
+
     /** @default 25 */
     pageSize ?:number;
 }

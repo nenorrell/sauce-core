@@ -7,6 +7,12 @@ clean:
 install:
 	docker run -i --rm --name install-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm install ${PCKG}
 
+lint:
+	docker run -i --rm --name lint-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint
+
+lint-fix:
+	docker run -i --rm --name lint-fix-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint:fix
+
 test: install unit_test
 
 unit_test:

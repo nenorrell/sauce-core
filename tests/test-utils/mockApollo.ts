@@ -1,6 +1,6 @@
-import { mock } from "sinon";
-import { buildApolloObj } from "../../core/Apollo";
-import { MockConfig } from "./MockConfig";
+import {mock} from 'sinon';
+import {buildApolloObj} from '../../core/Apollo';
+import {mockConfig} from './mockConfig';
 
 type MockedApollo = {
     req ?:any,
@@ -10,9 +10,9 @@ type MockedApollo = {
     currentRoute ?:any
 }
 
-export const MockApollo = (mocked ?:MockedApollo) :void=>{
+export const mockApollo = (mocked ?:MockedApollo) :void=>{
     buildApolloObj({
-        config: MockConfig,
+        config: mockConfig,
         req: (mocked||{}).req || <any>mock(),
         res: (mocked||{}).res || <any>mock(),
         next: (mocked||{}).next || <any>mock(),
@@ -20,4 +20,4 @@ export const MockApollo = (mocked ?:MockedApollo) :void=>{
         currentRoute: (mocked||{}).currentRoute || <any>mock()
     }
     );
-}
+};
