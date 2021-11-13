@@ -1,5 +1,5 @@
-import {RouteParam, ParamDataTypes} from '../../core/routes/RouteParam';
-import {Route} from '../../core/routes/Route';
+import {RouteParam, ParamDataTypes} from "../../core/routes/RouteParam";
+import {Route} from "../../core/routes/Route";
 
 interface IMockParam{
     name ?:string
@@ -10,19 +10,19 @@ interface IMockParam{
 
 export const mockRouteWithPathParams = (config :IMockParam[]) :Route =>{
     return new Route()
-        .setMethod('GET')
+        .setMethod("GET")
         .setPathParams(mockRouteParams(config));
 };
 
 export const mockRouteWithQueryParams = (config :IMockParam[]) :Route =>{
     return new Route()
-        .setMethod('GET')
+        .setMethod("GET")
         .setQueryParams(mockRouteParams(config));
 };
 
 export const mockRouteWithBodyParams = (params :RouteParam[]) :Route =>{
     return new Route()
-        .setMethod('POST')
+        .setMethod("POST")
         .setBodySchema(params);
 };
 
@@ -32,8 +32,8 @@ export const mockRouteParams = (config) :RouteParam[] =>{
 
 export const mockRouteParam = ({name, type, isRequired, enumValues}:IMockParam) :RouteParam =>{
     const param = new RouteParam()
-        .setName(name || 'someParam')
-        .setType(type !== undefined ? type : 'string')
+        .setName(name || "someParam")
+        .setType(type !== undefined ? type : "string")
         .setRequired(isRequired || false);
     if(enumValues) {
         param.setEnumValues(enumValues);

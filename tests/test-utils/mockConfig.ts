@@ -1,5 +1,5 @@
-import {ApolloConfig} from '../../core';
-import {mockRouteParam, mockRouteWithPathParams} from './mockRoute';
+import {ApolloConfig} from "../../core";
+import {mockRouteParam, mockRouteWithPathParams} from "./mockRoute";
 
 interface MockPolicyOptions{
     policyOne: ()=>{},
@@ -10,8 +10,8 @@ export const mockConfig :ApolloConfig<MockPolicyOptions> = {
     routes: [
         mockRouteWithPathParams([
             mockRouteParam({
-                name: 'param1',
-                type: 'string',
+                name: "param1",
+                type: "string",
                 isRequired: true
             })
         ])
@@ -22,13 +22,13 @@ export const mockConfig :ApolloConfig<MockPolicyOptions> = {
     },
     environments: {
         local: {
-            url: 'http://localhost:3035'
+            url: "http://localhost:3035"
         },
         qa: {
-            url: 'https://qa.somewhere.com'
+            url: "https://qa.somewhere.com"
         },
         prod: {
-            url: 'https://somewhere.com'
+            url: "https://somewhere.com"
         }
     },
     pagination: {

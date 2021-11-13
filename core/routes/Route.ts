@@ -1,6 +1,6 @@
-import {RouteParam} from './RouteParam';
-import {HttpMethod} from '../resources/Common';
-import {ApolloResponseType} from '../resources/IResponses';
+import {RouteParam} from "./RouteParam";
+import {HttpMethod} from "../resources/Common";
+import {ApolloResponseType} from "../resources/IResponses";
 
 /** Configure a route for the application */
 export class Route {
@@ -151,7 +151,7 @@ export class Route {
     private buildBodySchemaLevel(item :RouteParam) :any {
         let obj :any = {};
         if(item.children) {
-            if(item.type === 'object') {
+            if(item.type === "object") {
                 obj = this.buildSchema(item.children);
             }
             else{
@@ -171,8 +171,8 @@ export class Route {
             required: item.required || false,
             type: item.type
         };
-        if(item.type === 'enum') {
-            obj['enumValues'] = item.enumValues;
+        if(item.type === "enum") {
+            obj["enumValues"] = item.enumValues;
         }
         return obj;
     }

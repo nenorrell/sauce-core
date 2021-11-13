@@ -1,4 +1,4 @@
-export type ParamDataTypes = 'boolean'|'number'|'string'|'object'|'array'|'enum';
+export type ParamDataTypes = "boolean"|"number"|"string"|"object"|"array"|"enum";
 
 /**
  * Defines a route param for Apollo to pickup.

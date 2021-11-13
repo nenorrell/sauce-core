@@ -1,13 +1,13 @@
-import {expect} from 'chai';
-import {mockApollo} from '../test-utils/mockApollo';
-import {Service} from '../../core/Service';
-import * as utility from '../../core/utility';
-import * as Sinon from 'sinon';
+import {expect} from "chai";
+import {mockApollo} from "../test-utils/mockApollo";
+import {Service} from "../../core/Service";
+import * as utility from "../../core/utility";
+import * as Sinon from "sinon";
 let service :Service;
 
-describe('Service', ()=> {
-    describe('buildPaginationQuery()', ()=>{
-        it('Should build pagination properties properly for first page', (done)=>{
+describe("Service", ()=> {
+    describe("buildPaginationQuery()", ()=>{
+        it("Should build pagination properties properly for first page", (done)=>{
             mockApollo({
                 req: {
                     query: {
@@ -16,7 +16,7 @@ describe('Service', ()=> {
                     }
                 },
                 currentRoute: {
-                    queryParamKeys: ['page', 'pageSize'],
+                    queryParamKeys: ["page", "pageSize"],
                     hasQueryParam: ()=>{
                         return true;
                     }
@@ -24,14 +24,14 @@ describe('Service', ()=> {
             });
             service = new Service();
 
-            expect(service['buildPaginationQuery']()).to.deep.equal({
+            expect(service["buildPaginationQuery"]()).to.deep.equal({
                 limit: 25,
                 skip: 0
             });
             done();
         });
 
-        it('Should build pagination properties properly for subsequent pages', (done)=>{
+        it("Should build pagination properties properly for subsequent pages", (done)=>{
             mockApollo({
                 req: {
                     query: {
@@ -40,7 +40,7 @@ describe('Service', ()=> {
                     },
                 },
                 currentRoute: {
-                    queryParamKeys: ['page', 'pageSize'],
+                    queryParamKeys: ["page", "pageSize"],
                     hasQueryParam: ()=>{
                         return true;
                     }
@@ -48,14 +48,14 @@ describe('Service', ()=> {
             });
             service = new Service();
 
-            expect(service['buildPaginationQuery']()).to.deep.equal({
+            expect(service["buildPaginationQuery"]()).to.deep.equal({
                 limit: 25,
                 skip: 50
             });
             done();
         });
 
-        it('Should respect the limit of pageSize', (done)=>{
+        it("Should respect the limit of pageSize", (done)=>{
             mockApollo({
                 req: {
                     query: {
@@ -64,7 +64,7 @@ describe('Service', ()=> {
                     }
                 },
                 currentRoute: {
-                    queryParamKeys: ['page', 'pageSize'],
+                    queryParamKeys: ["page", "pageSize"],
                     hasQueryParam: ()=>{
                         return true;
                     }
@@ -72,74 +72,74 @@ describe('Service', ()=> {
             });
             service = new Service();
             try{
-                service['buildPaginationQuery']();
+                service["buildPaginationQuery"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'Page size can not exceed 50'
+                    details: "Page size can not exceed 50"
                 });
             }
             done();
         });
     });
 
-    describe('paginate()', ()=>{
+    describe("paginate()", ()=>{
         before(()=>{
-            Sinon.stub(utility, 'getAppUrl').returns('https://someUrl.com');
+            Sinon.stub(utility, "getAppUrl").returns("https://someUrl.com");
         });
 
         after(()=>{
             Sinon.reset();
         });
 
-        it('Should return pagination object properly', (done)=>{
+        it("Should return pagination object properly", (done)=>{
             mockApollo({
                 req: {
                     query: {
                         page: 3,
                         pageSize: 1
                     },
-                    path: '/some/path'
+                    path: "/some/path"
                 },
                 currentRoute: {
-                    queryParamKeys: ['page', 'pageSize'],
+                    queryParamKeys: ["page", "pageSize"],
                     hasQueryParam: ()=>{
                         return true;
                     }
                 }
             });
             service = new Service();
-            service['buildPaginationQuery']();
+            service["buildPaginationQuery"]();
 
             const mockData = [
                 {
-                    firstName: 'Bruce',
-                    lastName: 'Wayne'
+                    firstName: "Bruce",
+                    lastName: "Wayne"
                 },
                 {
-                    firstName: 'Clark',
-                    lastName: 'Kent'
+                    firstName: "Clark",
+                    lastName: "Kent"
                 },
                 {
-                    firstName: 'Tony',
-                    lastName: 'Stark'
+                    firstName: "Tony",
+                    lastName: "Stark"
                 },
                 {
-                    firstName: 'Steve',
-                    lastName: 'Rodgers'
+                    firstName: "Steve",
+                    lastName: "Rodgers"
                 },
                 {
-                    firstName: 'Miles',
-                    lastName: 'Morales'
+                    firstName: "Miles",
+                    lastName: "Morales"
                 }
             ];
             expect(service.paginate(mockData)).to.deep.eq({
                 data: mockData,
                 page: {
                     current: 3,
-                    next: 'https://someUrl.com/some/path?page=4&pageSize=1',
-                    prev: 'https://someUrl.com/some/path?page=2&pageSize=1',
+                    next: "https://someUrl.com/some/path?page=4&pageSize=1",
+                    prev: "https://someUrl.com/some/path?page=2&pageSize=1",
                     size: 1
                 }
             });

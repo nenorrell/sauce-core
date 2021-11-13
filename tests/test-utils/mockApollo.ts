@@ -1,6 +1,6 @@
-import {mock} from 'sinon';
-import {buildApolloObj} from '../../core/Apollo';
-import {mockConfig} from './mockConfig';
+import {mock} from "sinon";
+import {buildApolloObj} from "../../core/Apollo";
+import {mockConfig} from "./mockConfig";
 
 type MockedApollo = {
     req ?:any,

@@ -1,19 +1,25 @@
-import {Responses} from './Responses';
-import {RouteParam, ParamDataTypes} from './routes/RouteParam';
-import {formatError, asyncForEach} from './utility';
-import {Policies} from './routes/Policies';
-import {Apollo} from './Apollo';
+import {Responses} from "./Responses";
+import {RouteParam, ParamDataTypes} from "./routes/RouteParam";
+import {formatError, asyncForEach} from "./utility";
+import {Policies} from "./routes/Policies";
+import { ApolloType } from "./Apollo";
 
 export class Controller {
     protected responses :Responses;
-    protected req = Apollo.req;
-    protected currentRoute = Apollo.currentRoute;
-    protected res = Apollo.res;
-    protected next = Apollo.next;
-    protected route = Apollo.currentRoute;
-    protected config = Apollo.config;
+    protected req;
+    protected currentRoute;
+    protected res;
+    protected next;
+    protected route;
+    protected config;
 
-    constructor() {
+    constructor(Apollo :ApolloType) {
+        this.req = Apollo.req;
+        this.currentRoute = Apollo.currentRoute;
+        this.res = Apollo.res;
+        this.next = Apollo.next;
+        this.route = Apollo.currentRoute;
+        this.config = Apollo.config;
         this.responses = new Responses(this.res);
     }
 
@@ -61,7 +67,7 @@ export class Controller {
                     const queryParam = this.req.query[param.name];
                     this.validateRequiredParam(param, queryParam);
 
-                    if(typeof queryParam != 'undefined') {
+                    if(typeof queryParam != "undefined") {
                         this.validateParamType(param, queryParam);
                         this.req.query[param.name] = this.convertType(param.type, queryParam);
                         this.validateEnumParam(param, queryParam);
@@ -78,7 +84,7 @@ export class Controller {
         try{
             if(this.route.bodySchema) {
                 if(!this.req.body) {
-                    throw formatError(400, 'Payload is expected');
+                    throw formatError(400, "Payload is expected");
                 }
                 return this.validateReqBodyParams(this.route.bodySchema, null, this.req.body);
             }
@@ -119,7 +125,7 @@ export class Controller {
 
     private processBodyReqRow(schemaLevel :RouteParam, row ?:any) :void {
         this.validateRequiredParam(schemaLevel, row[schemaLevel.name]);
-        if(typeof row[schemaLevel.name] != 'undefined') {
+        if(typeof row[schemaLevel.name] != "undefined") {
             this.validateParamType(schemaLevel, row[schemaLevel.name]);
             row[schemaLevel.name] = this.convertType(schemaLevel.type, row[schemaLevel.name]);
         }
@@ -133,7 +139,7 @@ export class Controller {
     }
 
     private validateEnumParam(param :RouteParam, requestParam :any) :void {
-        if(requestParam && param.type === 'enum') {
+        if(requestParam && param.type === "enum") {
             const filtered = param.enumValues.filter((val)=>
                 val === requestParam
             );
@@ -166,10 +172,10 @@ export class Controller {
     private isValidTypes(type :ParamDataTypes, paramValue :any) :Boolean {
         let isValid :Boolean = true;
         switch(type) {
-        case 'boolean':
+        case "boolean":
             try{
-                const value = typeof paramValue == 'string' ? this.parseBool(paramValue) : paramValue;
-                if(typeof value !== 'boolean') {
+                const value = typeof paramValue == "string" ? this.parseBool(paramValue) : paramValue;
+                if(typeof value !== "boolean") {
                     isValid = false;
                 }
             }
@@ -178,25 +184,25 @@ export class Controller {
             }
             break;
 
-        case 'number':
+        case "number":
             if(isNaN(parseInt(paramValue))) {
                 isValid = false;
             }
             break;
 
-        case 'object':
-            if(!(typeof paramValue === 'object')) {
+        case "object":
+            if(!(typeof paramValue === "object")) {
                 isValid = false;
             }
             break;
 
-        case 'string':
-            if(typeof paramValue != 'string') {
+        case "string":
+            if(typeof paramValue != "string") {
                 isValid = false;
             }
             break;
 
-        case 'array':
+        case "array":
             if(!Array.isArray(paramValue)) {
                 isValid = false;
             }
@@ -211,10 +217,10 @@ export class Controller {
 
     private convertType(type :ParamDataTypes, paramValue :any) :any {
         switch(type) {
-        case 'boolean':
+        case "boolean":
             return this.parseBool(paramValue);
 
-        case 'number':
+        case "number":
             return (+paramValue);
 
         default:
@@ -224,13 +230,13 @@ export class Controller {
 
     private parseBool(stringIn :string) :Boolean {
         try{
-            if(stringIn === 'false') {
+            if(stringIn === "false") {
                 return false;
             }
-            if(stringIn === 'true') {
+            if(stringIn === "true") {
                 return true;
             }
-            throw Error('Invalid value supplied');
+            throw Error("Invalid value supplied");
         }
         catch(e) {
             throw e;

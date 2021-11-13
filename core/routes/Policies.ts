@@ -1,4 +1,4 @@
-import {ApolloConfig} from '../resources/ApolloConfig';
+import {ApolloConfig} from "../resources/ApolloConfig";
 
 export class Policies {
     private list :Map<String, Function> = new Map();
@@ -19,7 +19,7 @@ export class Policies {
         await policy();
     }
 
-    private setPolicies(policies :ApolloConfig['policies']) :void {
+    private setPolicies(policies :ApolloConfig["policies"]) :void {
         const policyKeys = Object.keys(policies);
 
         // eslint-disable-next-line guard-for-in

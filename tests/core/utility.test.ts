@@ -1,20 +1,20 @@
-import {expect} from 'chai';
-import * as utility from '../../core/utility';
+import {expect} from "chai";
+import * as utility from "../../core/utility";
 
-describe('Utility', ()=>{
-    describe('formatError()', ()=>{
-        it('Should format error properly', (done)=>{
-            const error = utility.formatError(400, 'Some Error');
+describe("Utility", ()=>{
+    describe("formatError()", ()=>{
+        it("Should format error properly", (done)=>{
+            const error = utility.formatError(400, "Some Error");
             expect(error).to.deep.eq({
                 status: 400,
-                details: 'Some Error'
+                details: "Some Error"
             });
             done();
         });
     });
 
-    describe('asyncForEach()', ()=>{
-        it('Should loop through as expected', async ()=>{
+    describe("asyncForEach()", ()=>{
+        it("Should loop through as expected", async ()=>{
             let counter :number = 0;
             const items = [1, 2, 3, 4, 5];
             await utility.asyncForEach(items, (item, index, array)=>{

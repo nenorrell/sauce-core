@@ -1,8 +1,12 @@
-import {green, yellow} from 'chalk';
+import {green, yellow} from "chalk";
+import { ApolloConfig } from "./resources/ApolloConfig";
+import { log } from "./Logger";
 
 export class Rocket {
+    constructor(protected config :ApolloConfig) {}
+
     public launch() {
-        return `${green(`
+        return log(this.config, "debug", `${green(`
        ^
       / \\
      /___\\
@@ -16,9 +20,9 @@ export class Rocket {
    /|##!##|\\
   / |##!##| \\
  /  |##!##|  \\
-|  / ${yellow(`( | )`)} \\  |
-| /  ${yellow(`( | )`)}  \\ |
-|/   ${yellow(`( | )`)}   \\|`)}${yellow(`
+|  / ${yellow("( | )")} \\  |
+| /  ${yellow("( | )")}  \\ |
+|/   ${yellow("( | )")}   \\|`)}${yellow(`
     ((   ))
    ((  :  ))
    ((  :  ))
@@ -26,6 +30,6 @@ export class Rocket {
      (( ))
       ( )
        .
-       `)}`;
+       `)}`);
     }
 }

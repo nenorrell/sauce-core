@@ -1,118 +1,117 @@
-import {expect} from 'chai';
-import {Apollo} from '../../core/Apollo';
-import {mockApollo} from '../test-utils/mockApollo';
-import {Controller} from '../../core/Controller';
-import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from '../test-utils/mockRoute';
-import {RouteParam} from '../../core/routes/RouteParam';
+import {expect} from "chai";
+import {Apollo} from "../../core/Apollo";
+import {mockApollo} from "../test-utils/mockApollo";
+import {Controller} from "../../core/Controller";
+import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../test-utils/mockRoute";
+import {RouteParam} from "../../core/routes/RouteParam";
 
 
 let controller :Controller;
 
-describe('Controller', ()=> {
+describe("Controller", ()=> {
     beforeEach(()=>{
     });
 
-    describe('validatePathParams()', ()=>{
-        it('Should not throw error if param matches validations', async ()=>{
+    describe("validatePathParams()", ()=>{
+        it("Should not throw error if param matches validations", async ()=>{
             mockApollo({
                 req: {
                     params: {
-                        userId: '1'
+                        userId: "1"
                     },
-                    path: '/users/1'
+                    path: "/users/1"
                 },
                 currentRoute: mockRouteWithPathParams([{
-                    name: 'userId',
-                    type: 'number',
+                    name: "userId",
+                    type: "number",
                     isRequired: true
                 }])
             });
             controller = new Controller();
-            const result = await controller['validatePathParams'].bind(controller)();
-            console.log(result);
-            expect(result).to.be.an('array');
+            const result = await controller["validatePathParams"].bind(controller)();
+            expect(result).to.be.an("array");
         });
 
-        it('Should not throw error if multiple params matches validations', async ()=>{
+        it("Should not throw error if multiple params matches validations", async ()=>{
             mockApollo({
                 req: {
                     params: {
-                        userId: '1',
-                        otherParam: 'someValue'
+                        userId: "1",
+                        otherParam: "someValue"
                     },
-                    path: '/users/1'
+                    path: "/users/1"
                 },
                 currentRoute: mockRouteWithPathParams([
                     {
-                        name: 'userId',
-                        type: 'number',
+                        name: "userId",
+                        type: "number",
                         isRequired: true
                     },
                     {
-                        name: 'otherParam',
-                        type: 'string',
+                        name: "otherParam",
+                        type: "string",
                         isRequired: true
                     }
                 ])
             });
             controller = new Controller();
-            expect(await controller['validatePathParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should convert path param number string to number', async ()=>{
+        it("Should convert path param number string to number", async ()=>{
             mockApollo({
                 req: {
                     params: {
-                        userId: '1'
+                        userId: "1"
                     },
-                    path: '/users/1'
+                    path: "/users/1"
                 },
                 currentRoute: mockRouteWithPathParams([
                     {
-                        name: 'userId',
-                        type: 'number',
+                        name: "userId",
+                        type: "number",
                         isRequired: true
                     }
                 ])
             });
             controller = new Controller();
-            expect(await controller['validatePathParams'].bind(controller)()).to.be.an('array');
-            expect(Apollo.req.params.userId).to.be.a('number');
+            expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
+            expect(Apollo.req.params.userId).to.be.a("number");
         });
 
-        it('Should convert path param boolean string to bool', async ()=>{
+        it("Should convert path param boolean string to bool", async ()=>{
             mockApollo({
                 req: {
                     params: {
-                        someParam: 'true'
+                        someParam: "true"
                     },
-                    path: '/path/true'
+                    path: "/path/true"
                 },
                 currentRoute: mockRouteWithPathParams([
                     {
-                        name: 'someParam',
-                        type: 'boolean',
+                        name: "someParam",
+                        type: "boolean",
                         isRequired: true
                     }
                 ])
             });
             controller = new Controller();
-            expect(await controller['validatePathParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
             expect(Apollo.req.params.someParam).to.be.true;
         });
 
-        it('Should throw error if param is required and not sent', async ()=>{
+        it("Should throw error if param is required and not sent", async ()=>{
             mockApollo({
                 req: {
                     params: {
-                        userId: 'test'
+                        userId: "test"
                     },
-                    path: '/users/test'
+                    path: "/users/test"
                 },
                 currentRoute: mockRouteWithPathParams([
                     {
-                        name: 'userId',
-                        type: 'number',
+                        name: "userId",
+                        type: "number",
                         isRequired: true
                     }
                 ])
@@ -120,149 +119,149 @@ describe('Controller', ()=> {
 
             controller = new Controller();
             try{
-                await controller['validatePathParams']();
+                await controller["validatePathParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'GET /users/test is not a valid request path'
+                    details: "GET /users/test is not a valid request path"
                 });
             }
         });
     });
 
-    describe('validateQueryParams()', ()=>{
-        it('Should not throw error if params match validations', async ()=>{
+    describe("validateQueryParams()", ()=>{
+        it("Should not throw error if params match validations", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        someParam: 'someParam'
+                        someParam: "someParam"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([{
-                    name: 'someParam',
-                    type: 'string',
+                    name: "someParam",
+                    type: "string",
                     isRequired: true
                 }])
             });
 
             controller = new Controller();
-            expect(await controller['validateQueryParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should not throw error if params match validations (multiple query params)', async ()=>{
+        it("Should not throw error if params match validations (multiple query params)", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        someParam: 'someParam',
+                        someParam: "someParam",
                         someOtherParam: 1
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'someParam',
-                        type: 'string',
+                        name: "someParam",
+                        type: "string",
                         isRequired: true
                     },
                     {
-                        name: 'someOtherParam',
-                        type: 'number',
+                        name: "someOtherParam",
+                        type: "number",
                         isRequired: true
                     }
                 ])
             });
 
             controller = new Controller();
-            expect(await controller['validateQueryParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should not throw error if an optional param isn\'t sent', async ()=>{
+        it("Should not throw error if an optional param isn't sent", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        someParam: 'someParam'
+                        someParam: "someParam"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'someParam',
-                        type: 'string',
+                        name: "someParam",
+                        type: "string",
                         isRequired: true
                     },
                     {
-                        name: 'someOtherParam',
-                        type: 'number',
+                        name: "someOtherParam",
+                        type: "number",
                         isRequired: false
                     }
                 ])
             });
 
             controller = new Controller();
-            expect(await controller['validateQueryParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should convert path param number string to number', async ()=>{
+        it("Should convert path param number string to number", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        numberParam: '2'
+                        numberParam: "2"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'numberParam',
-                        type: 'number',
+                        name: "numberParam",
+                        type: "number",
                         isRequired: true
                     }
                 ])
             });
             controller = new Controller();
-            expect(await controller['validateQueryParams'].bind(controller)()).to.be.an('array');
-            expect(Apollo.req.query.numberParam).to.be.a('number');
+            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
+            expect(Apollo.req.query.numberParam).to.be.a("number");
         });
 
-        it('Should convert path param boolean string to bool', async ()=>{
+        it("Should convert path param boolean string to bool", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        booleanParam: 'true'
+                        booleanParam: "true"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'booleanParam',
-                        type: 'boolean',
+                        name: "booleanParam",
+                        type: "boolean",
                         isRequired: true
                     }
                 ])
             });
             controller = new Controller();
-            expect(await controller['validateQueryParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
             expect(Apollo.req.query.booleanParam).to.be.true;
         });
 
-        it('Should throw error if params are required and are not sent', async ()=>{
+        it("Should throw error if params are required and are not sent", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        someParam: 'someParam'
+                        someParam: "someParam"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'someParam',
-                        type: 'string',
+                        name: "someParam",
+                        type: "string",
                         isRequired: true
                     },
                     {
-                        name: 'someOtherParam',
-                        type: 'number',
+                        name: "someOtherParam",
+                        type: "number",
                         isRequired: true
                     }
                 ])
@@ -270,34 +269,34 @@ describe('Controller', ()=> {
 
             controller = new Controller();
             try{
-                await controller['validateQueryParams']();
+                await controller["validateQueryParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'someOtherParam was not sent and is required'
+                    details: "someOtherParam was not sent and is required"
                 });
             }
         });
 
-        it('Should throw error if params values do not match expected type', async ()=>{
+        it("Should throw error if params values do not match expected type", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        someParam: 'someParam',
-                        someOtherParam: 'some string'
+                        someParam: "someParam",
+                        someOtherParam: "some string"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'someParam',
-                        type: 'string',
+                        name: "someParam",
+                        type: "string",
                         isRequired: true
                     },
                     {
-                        name: 'someOtherParam',
-                        type: 'number',
+                        name: "someOtherParam",
+                        type: "number",
                         isRequired: true
                     }
                 ])
@@ -305,51 +304,51 @@ describe('Controller', ()=> {
 
             controller = new Controller();
             try{
-                await controller['validateQueryParams']();
+                await controller["validateQueryParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'Invalid param type for someOtherParam: Expected number but got string'
+                    details: "Invalid param type for someOtherParam: Expected number but got string"
                 });
             }
         });
 
-        it('Should not throw error if param value is in enum choices', async ()=>{
+        it("Should not throw error if param value is in enum choices", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        enumParam: 'enumValue'
+                        enumParam: "enumValue"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'enumParam',
-                        type: 'enum',
-                        enumValues: ['enumValue'],
+                        name: "enumParam",
+                        type: "enum",
+                        enumValues: ["enumValue"],
                         isRequired: true
                     }
                 ])
             });
 
             controller = new Controller();
-            expect(await controller['validateQueryParams'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should throw error if param value is not in enum', async ()=>{
+        it("Should throw error if param value is not in enum", async ()=>{
             mockApollo({
                 req: {
                     query: {
-                        enumParam: 'enumValue'
+                        enumParam: "enumValue"
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithQueryParams([
                     {
-                        name: 'enumParam',
-                        type: 'enum',
-                        enumValues: ['testVal'],
+                        name: "enumParam",
+                        type: "enum",
+                        enumValues: ["testVal"],
                         isRequired: true
                     }
                 ])
@@ -357,150 +356,150 @@ describe('Controller', ()=> {
 
             controller = new Controller();
             try{
-                await controller['validateQueryParams']();
+                await controller["validateQueryParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'Invalid enum value for enumParam: enumValue'
+                    details: "Invalid enum value for enumParam: enumValue"
                 });
             }
         });
     });
 
-    describe('validateReqBody()', ()=>{
+    describe("validateReqBody()", ()=>{
         let paramsWithChildren;
 
         before(()=>{
             paramsWithChildren = [
                 new RouteParam()
-                    .setName('name')
+                    .setName("name")
                     .setRequired(true)
-                    .setType('string'),
+                    .setType("string"),
 
                 new RouteParam()
-                    .setName('children')
+                    .setName("children")
                     .setRequired(true)
-                    .setType('object')
+                    .setType("object")
                     .setChildren([
                         new RouteParam()
-                            .setName('child1')
+                            .setName("child1")
                             .setRequired(true)
-                            .setType('string'),
+                            .setType("string"),
 
                         new RouteParam()
-                            .setName('child2')
+                            .setName("child2")
                             .setRequired(false)
-                            .setType('number')
+                            .setType("number")
                     ])
             ];
         });
 
-        it('Should not throw error if body params match validations', async ()=>{
+        it("Should not throw error if body params match validations", async ()=>{
             mockApollo({
                 req: {
                     body: {
-                        name: 'test',
+                        name: "test",
                         children: {
-                            child1: 'someString',
-                            child2: '1'
+                            child1: "someString",
+                            child2: "1"
                         }
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
             controller = new Controller();
-            expect(await controller['validateReqBody'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should not throw error if an optional param isn\'t sent', async ()=>{
+        it("Should not throw error if an optional param isn't sent", async ()=>{
             mockApollo({
                 req: {
                     body: {
-                        name: 'test',
+                        name: "test",
                         children: {
-                            child1: 'someString'
+                            child1: "someString"
                         }
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
             controller = new Controller();
-            expect(await controller['validateReqBody'].bind(controller)()).to.be.an('array');
+            expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
         });
 
-        it('Should convert body param number string to number', async ()=>{
+        it("Should convert body param number string to number", async ()=>{
             mockApollo({
                 req: {
                     body: {
-                        name: 'test',
+                        name: "test",
                         children: {
-                            child1: 'someString',
-                            child2: '1'
+                            child1: "someString",
+                            child2: "1"
                         }
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
             controller = new Controller();
-            expect(await controller['validateReqBody'].bind(controller)()).to.be.an('array');
-            expect(Apollo.req.body.children.child2).to.be.a('number');
+            expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
+            expect(Apollo.req.body.children.child2).to.be.a("number");
         });
 
-        it('Should throw error if params are required and are not sent', async ()=>{
+        it("Should throw error if params are required and are not sent", async ()=>{
             mockApollo({
                 req: {
                     body: {
-                        name: 'test',
+                        name: "test",
                         children: {
-                            child2: '1'
+                            child2: "1"
                         }
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
             controller = new Controller();
             try{
-                await controller['validateReqBody']();
+                await controller["validateReqBody"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'child1 was not sent and is required'
+                    details: "child1 was not sent and is required"
                 });
             }
         });
 
-        it('Should throw error if params values do not match expected type', async ()=>{
+        it("Should throw error if params values do not match expected type", async ()=>{
             mockApollo({
                 req: {
                     body: {
-                        name: 'test',
+                        name: "test",
                         children: {
-                            child1: 'someString',
-                            child2: 'Invalid param value'
+                            child1: "someString",
+                            child2: "Invalid param value"
                         }
                     },
-                    path: '/some/route'
+                    path: "/some/route"
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
             controller = new Controller();
             try{
-                await controller['validateReqBody']();
+                await controller["validateReqBody"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
                     status: 400,
-                    details: 'Invalid param type for child2: Expected number but got string'
+                    details: "Invalid param type for child2: Expected number but got string"
                 });
             }
         });

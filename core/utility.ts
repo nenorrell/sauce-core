@@ -1,5 +1,5 @@
-import {ErrorInterface} from './resources/ErrorInterface';
-import {ApolloConfig} from './resources/ApolloConfig';
+import {ErrorInterface} from "./resources/ErrorInterface";
+import {ApolloConfig} from "./resources/ApolloConfig";
 
 export const cleanObject = async (obj: any) :Promise<void> => {
     asyncForEach(Object.keys(obj), async key =>{
@@ -39,5 +39,5 @@ export const getAppUrl = (config :ApolloConfig) :string => {
 };
 
 export const isObject = (obj)=>{
-    return obj === Object(obj) && !Array.isArray(obj) && typeof obj !== 'function';
+    return obj === Object(obj) && !Array.isArray(obj) && typeof obj !== "function";
 };

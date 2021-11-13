@@ -1,5 +1,5 @@
-import {ObjectOfAnything} from './Common';
-import {PaginatedObject} from './PaginationTypes';
+import {ObjectOfAnything} from "./Common";
+import {PaginatedObject} from "./PaginationTypes";
 
 export type ApolloResponseType = IPaginatedResponse | IResponse | IArrayResponse | IErrorResponse;
 
@@ -8,8 +8,8 @@ interface ICommonResponse{
 }
 
 export interface IPaginatedResponse extends ICommonResponse{
-    response :PaginatedObject['data'],
-    page :PaginatedObject['page'],
+    response :PaginatedObject["data"],
+    page :PaginatedObject["page"],
 }
 
 export interface IResponse extends ICommonResponse{

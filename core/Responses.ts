@@ -1,7 +1,7 @@
-import {Response} from 'express';
-import {ObjectOfAnything} from './resources/Common';
-import {IArrayResponse, IErrorResponse, IPaginatedResponse, IResponse} from './resources/IResponses';
-import {PaginatedObject} from './resources/PaginationTypes';
+import {Response} from "express";
+import {ObjectOfAnything} from "./resources/Common";
+import {IArrayResponse, IErrorResponse, IPaginatedResponse, IResponse} from "./resources/IResponses";
+import {PaginatedObject} from "./resources/PaginationTypes";
 
 export class Responses {
     private res :Response;
@@ -27,22 +27,22 @@ export class Responses {
 
     public badRequest(data :any, options ?:any) :void {
         const code = 400;
-        this.res.status(code).json(formatErrorResponse(code, 'Bad Request', data));
+        this.res.status(code).json(formatErrorResponse(code, "Bad Request", data));
     }
 
     public serverError(data :any, options ?:any) :void {
         const code = 500;
-        this.res.status(code).json(formatErrorResponse(code, 'Internal Server Error', data));
+        this.res.status(code).json(formatErrorResponse(code, "Internal Server Error", data));
     }
 
     public notFound(data :any, options ?:any) :void {
         const code = 404;
-        this.res.status(code).json(formatErrorResponse(code, 'Not Found', data));
+        this.res.status(code).json(formatErrorResponse(code, "Not Found", data));
     }
 
     public unauthorized(data :any, options ?:any) :void {
         const code = 401;
-        this.res.status(code).json(formatErrorResponse(code, 'Unauthorized', data));
+        this.res.status(code).json(formatErrorResponse(code, "Unauthorized", data));
     }
 }
 
@@ -73,6 +73,6 @@ export const formatErrorResponse = (code :number, error :string, errorDescriptio
         response: {},
         code,
         error,
-        error_description: errorDescription || ''
+        error_description: errorDescription || ""
     };
 };
