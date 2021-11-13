@@ -1,9 +1,11 @@
+import { ApolloType } from "../Apollo";
 import {ApolloConfig} from "../resources/ApolloConfig";
 
+export type policyMethod = (Apollo :ApolloType)=>Promise<void>
 export class Policies {
-    private list :Map<String, Function> = new Map();
+    private list :Map<String, policyMethod> = new Map();
 
-    constructor(config :ApolloConfig) {
+    constructor(private config :ApolloConfig, private Apollo :ApolloType) {
         try{
             if(config.policies) {
                 this.setPolicies(config.policies);
@@ -15,16 +17,21 @@ export class Policies {
     }
 
     public async runPolicy(policyName :string) :Promise<void> {
-        const policy = this.list.get(policyName);
-        await policy();
+        try{
+            const policy = this.list.get(policyName);
+            await policy(this.Apollo);
+        }
+        catch(err) {
+            throw new Error(err);
+        }
     }
 
     private setPolicies(policies :ApolloConfig["policies"]) :void {
         const policyKeys = Object.keys(policies);
 
-        // eslint-disable-next-line guard-for-in
-        for(const policyName in policyKeys) {
-            this.list.set(policyName, policies[policyName]);
-        }
+        // It's super not ideal to use .forEach here since it's blocking. But
+        // it should be pretty much a non factor since routes will typically
+        // only have just a few policies
+        policyKeys.forEach((name) => this.list.set(name, policies[name]));
     }
 }

@@ -13,7 +13,7 @@ export class Controller {
     protected route;
     protected config;
 
-    constructor(Apollo :ApolloType) {
+    constructor(protected Apollo :ApolloType) {
         this.req = Apollo.req;
         this.currentRoute = Apollo.currentRoute;
         this.res = Apollo.res;
@@ -24,7 +24,7 @@ export class Controller {
     }
 
     public async checkPolicies() :Promise<void> {
-        const policies = new Policies(this.config);
+        const policies = new Policies(this.config, this.Apollo);
         if (this.route.policies) {
             await asyncForEach(this.route.policies, async policyName => {
                 await policies.runPolicy(policyName);

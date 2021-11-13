@@ -1,12 +1,13 @@
+import { policyMethod } from "../routes/Policies";
 import {Route} from "../routes/Route";
 import {PaginationConfig} from "./PaginationTypes";
 
 type PolicyFunctions = {
-    [key :string] :Function
+    [key :string] :policyMethod
 };
 
 type Policies<T> = {
-    [key in keyof T] :Function // eslint-disable-line no-unused-vars
+    [key in keyof T] :policyMethod // eslint-disable-line no-unused-vars
 };
 
 export interface ApolloConfig<PolicyOptions=PolicyFunctions> {
