@@ -8,7 +8,7 @@ let service :Service;
 describe("Service", ()=> {
     describe("buildPaginationQuery()", ()=>{
         it("Should build pagination properties properly for first page", (done)=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         page: 1,
@@ -22,7 +22,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service();
+            service = new Service(Apollo);
 
             expect(service["buildPaginationQuery"]()).to.deep.equal({
                 limit: 25,
@@ -32,7 +32,7 @@ describe("Service", ()=> {
         });
 
         it("Should build pagination properties properly for subsequent pages", (done)=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         page: 3,
@@ -46,7 +46,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service();
+            service = new Service(Apollo);
 
             expect(service["buildPaginationQuery"]()).to.deep.equal({
                 limit: 25,
@@ -56,7 +56,7 @@ describe("Service", ()=> {
         });
 
         it("Should respect the limit of pageSize", (done)=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         page: 3,
@@ -70,7 +70,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service();
+            service = new Service(Apollo);
             try{
                 service["buildPaginationQuery"]();
             }
@@ -94,7 +94,7 @@ describe("Service", ()=> {
         });
 
         it("Should return pagination object properly", (done)=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         page: 3,
@@ -109,7 +109,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service();
+            service = new Service(Apollo);
             service["buildPaginationQuery"]();
 
             const mockData = [

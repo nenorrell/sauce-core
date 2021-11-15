@@ -2,11 +2,12 @@ import {ApolloConfig} from "../../core";
 import {mockRouteParam, mockRouteWithPathParams} from "./mockRoute";
 
 interface MockPolicyOptions{
-    policyOne: ()=>{},
-    policyTwo: ()=>{}
+    policyOne: ()=>Promise<void>,
+    policyTwo: ()=>Promise<void>
 }
 
 export const mockConfig :ApolloConfig<MockPolicyOptions> = {
+    controllerDirectory: "",
     routes: [
         mockRouteWithPathParams([
             mockRouteParam({
@@ -17,8 +18,8 @@ export const mockConfig :ApolloConfig<MockPolicyOptions> = {
         ])
     ],
     policies: {
-        policyOne: ()=>{},
-        policyTwo: ()=>{}
+        policyOne: async ()=>{},
+        policyTwo: async ()=>{}
     },
     environments: {
         local: {

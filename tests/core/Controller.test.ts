@@ -1,5 +1,4 @@
 import {expect} from "chai";
-import {Apollo} from "../../core/Apollo";
 import {mockApollo} from "../test-utils/mockApollo";
 import {Controller} from "../../core/Controller";
 import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../test-utils/mockRoute";
@@ -9,12 +8,9 @@ import {RouteParam} from "../../core/routes/RouteParam";
 let controller :Controller;
 
 describe("Controller", ()=> {
-    beforeEach(()=>{
-    });
-
     describe("validatePathParams()", ()=>{
         it("Should not throw error if param matches validations", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     params: {
                         userId: "1"
@@ -27,13 +23,13 @@ describe("Controller", ()=> {
                     isRequired: true
                 }])
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             const result = await controller["validatePathParams"].bind(controller)();
             expect(result).to.be.an("array");
         });
 
         it("Should not throw error if multiple params matches validations", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     params: {
                         userId: "1",
@@ -54,12 +50,12 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
         });
 
         it("Should convert path param number string to number", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     params: {
                         userId: "1"
@@ -74,13 +70,13 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
-            expect(Apollo.req.params.userId).to.be.a("number");
+            expect(controller["req"].params.userId).to.be.a("number");
         });
 
         it("Should convert path param boolean string to bool", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     params: {
                         someParam: "true"
@@ -95,13 +91,13 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
-            expect(Apollo.req.params.someParam).to.be.true;
+            expect(controller["req"].params.someParam).to.be.true;
         });
 
         it("Should throw error if param is required and not sent", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     params: {
                         userId: "test"
@@ -117,7 +113,7 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             try{
                 await controller["validatePathParams"]();
             }
@@ -132,7 +128,7 @@ describe("Controller", ()=> {
 
     describe("validateQueryParams()", ()=>{
         it("Should not throw error if params match validations", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -146,12 +142,12 @@ describe("Controller", ()=> {
                 }])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
         it("Should not throw error if params match validations (multiple query params)", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         someParam: "someParam",
@@ -173,12 +169,12 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
         it("Should not throw error if an optional param isn't sent", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -199,12 +195,12 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
         it("Should convert path param number string to number", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         numberParam: "2"
@@ -219,13 +215,13 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
-            expect(Apollo.req.query.numberParam).to.be.a("number");
+            expect(controller["req"].query.numberParam).to.be.a("number");
         });
 
         it("Should convert path param boolean string to bool", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         booleanParam: "true"
@@ -240,13 +236,13 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
-            expect(Apollo.req.query.booleanParam).to.be.true;
+            expect(controller["req"].query.booleanParam).to.be.true;
         });
 
         it("Should throw error if params are required and are not sent", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -267,7 +263,7 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             try{
                 await controller["validateQueryParams"]();
             }
@@ -280,7 +276,7 @@ describe("Controller", ()=> {
         });
 
         it("Should throw error if params values do not match expected type", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         someParam: "someParam",
@@ -302,7 +298,7 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             try{
                 await controller["validateQueryParams"]();
             }
@@ -315,7 +311,7 @@ describe("Controller", ()=> {
         });
 
         it("Should not throw error if param value is in enum choices", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         enumParam: "enumValue"
@@ -332,12 +328,12 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
         });
 
         it("Should throw error if param value is not in enum", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     query: {
                         enumParam: "enumValue"
@@ -354,7 +350,7 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             try{
                 await controller["validateQueryParams"]();
             }
@@ -396,7 +392,7 @@ describe("Controller", ()=> {
         });
 
         it("Should not throw error if body params match validations", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     body: {
                         name: "test",
@@ -410,12 +406,12 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
         });
 
         it("Should not throw error if an optional param isn't sent", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     body: {
                         name: "test",
@@ -428,12 +424,12 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
         });
 
         it("Should convert body param number string to number", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     body: {
                         name: "test",
@@ -446,13 +442,13 @@ describe("Controller", ()=> {
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
-            controller = new Controller();
+            controller = new Controller(Apollo);
             expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
-            expect(Apollo.req.body.children.child2).to.be.a("number");
+            expect(controller["req"].body.children.child2).to.be.a("number");
         });
 
         it("Should throw error if params are required and are not sent", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     body: {
                         name: "test",
@@ -465,7 +461,7 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             try{
                 await controller["validateReqBody"]();
             }
@@ -478,7 +474,7 @@ describe("Controller", ()=> {
         });
 
         it("Should throw error if params values do not match expected type", async ()=>{
-            mockApollo({
+            const Apollo = mockApollo({
                 req: {
                     body: {
                         name: "test",
@@ -492,7 +488,7 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller();
+            controller = new Controller(Apollo);
             try{
                 await controller["validateReqBody"]();
             }
