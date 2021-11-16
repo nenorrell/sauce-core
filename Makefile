@@ -29,3 +29,6 @@ package:
 
 compile:
 	docker run -i --rm --name compile-apollo-api -e NODE_ENV=production -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run build
+
+publish: test
+	npm publish --access=public
