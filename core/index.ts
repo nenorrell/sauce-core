@@ -1,5 +1,5 @@
 /** CORE */
-export {ApolloType, buildApolloObj} from "./Apollo";
+export {Apollo, buildApolloObj} from "./Apollo";
 export {Controller} from "./Controller";
 export {Service} from "./Service";
 export {Responses, formatArrayResponse, formatErrorResponse, formatObjectResponse, formatPaginatedResponse} from "./Responses";

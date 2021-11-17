@@ -1,8 +1,9 @@
-import { ApolloType } from "./Apollo";
+import { Apollo } from "./Apollo";
+import { ObjectOfAnything } from "./resources/Common";
 import {PaginatedObject, PaginationQuery, PaginationConfig} from "./resources/PaginationTypes";
 import {getAppUrl, formatError} from "./utility";
 
-export class Service {
+export class Service<custom=ObjectOfAnything> {
     protected req;
     protected currentRoute;
     protected res;
@@ -11,7 +12,7 @@ export class Service {
     protected config;
     protected paging :PaginationConfig & {page :number};
 
-    constructor(protected Apollo :ApolloType) {
+    constructor(protected Apollo :Apollo<custom>) {
         this.req = Apollo.req;
         this.currentRoute = Apollo.currentRoute;
         this.res = Apollo.res;

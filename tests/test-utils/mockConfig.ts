@@ -1,4 +1,5 @@
 import {ApolloConfig} from "../../core";
+import { ObjectOfAnything } from "../../core/resources/Common";
 import {mockRouteParam, mockRouteWithPathParams} from "./mockRoute";
 
 interface MockPolicyOptions{
@@ -6,7 +7,7 @@ interface MockPolicyOptions{
     policyTwo: ()=>Promise<void>
 }
 
-export const mockConfig :ApolloConfig<MockPolicyOptions> = {
+export const mockConfig :ApolloConfig<ObjectOfAnything, MockPolicyOptions> = {
     controllerDirectory: "",
     routes: [
         mockRouteWithPathParams([

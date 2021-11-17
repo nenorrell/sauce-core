@@ -1,11 +1,12 @@
-import { ApolloType } from "../Apollo";
+import { Apollo } from "../Apollo";
 import {ApolloConfig} from "../resources/ApolloConfig";
+import { ObjectOfAnything } from "../resources/Common";
 
-export type policyMethod = (Apollo :ApolloType)=>Promise<void>
-export class Policies {
-    private list :Map<String, policyMethod> = new Map();
+export type policyMethod<custom> = (Apollo :Apollo<custom>)=>Promise<void>
+export class Policies<custom=ObjectOfAnything> {
+    private list :Map<String, policyMethod<custom>> = new Map();
 
-    constructor(private config :ApolloConfig, private Apollo :ApolloType) {
+    constructor(private config :ApolloConfig, private Apollo :Apollo<custom>) {
         try{
             if(config.policies) {
                 this.setPolicies(config.policies);

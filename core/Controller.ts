@@ -2,9 +2,10 @@ import {Responses} from "./Responses";
 import {RouteParam, ParamDataTypes} from "./routes/RouteParam";
 import {formatError, asyncForEach} from "./utility";
 import {Policies} from "./routes/Policies";
-import { ApolloType } from "./Apollo";
+import { Apollo } from "./Apollo";
+import { ObjectOfAnything } from "./resources/Common";
 
-export class Controller {
+export class Controller<custom=ObjectOfAnything> {
     protected responses :Responses;
     protected req;
     protected currentRoute;
@@ -13,7 +14,7 @@ export class Controller {
     protected route;
     protected config;
 
-    constructor(protected Apollo :ApolloType) {
+    constructor(protected Apollo :Apollo<custom>) {
         this.req = Apollo.req;
         this.currentRoute = Apollo.currentRoute;
         this.res = Apollo.res;

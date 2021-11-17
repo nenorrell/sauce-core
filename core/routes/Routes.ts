@@ -5,8 +5,8 @@ import {ApolloConfig} from "../resources/ApolloConfig";
 import { log } from "../Logger";
 import { yellow } from "chalk";
 import { Application, NextFunction, Request, Response } from "express";
-import { ApolloType, buildApolloObj, Controller } from "..";
-import { ApolloBuild } from "../Apollo";
+import { Apollo, buildApolloObj } from "../Apollo";
+import { Controller } from "../Controller";
 
 interface RouteLifecycleHooks{
     /**
@@ -22,10 +22,10 @@ interface RouteLifecycleHooks{
     after(route :Route, app :Application, req :Request, res :Response, next :NextFunction) :Promise<void>
 }
 
-interface BindRoutesArgs<ApolloCustom> {
+interface BindRoutesArgs<custom> {
     app :Application
     routeHooks ?:RouteLifecycleHooks
-    apolloCustom :ApolloBuild<ApolloCustom>["custom"]
+    apolloCustom :Apollo<custom>["custom"]
 }
 
 /**
@@ -124,7 +124,7 @@ export class Routes {
 
 
     /** This should only run on startup so it's fine that it's not async */
-    public bindRotues<T>({app, routeHooks, apolloCustom}:BindRoutesArgs<T>) :void {
+    public bindRotues<custom>({app, routeHooks, apolloCustom}:BindRoutesArgs<custom>) :void {
         this.routesArray.forEach(route =>{
             try{
                 if(route.excludedEnvironments && route.excludedEnvironments.includes(process.env.ENV)) {
@@ -146,7 +146,7 @@ export class Routes {
                                 controller = require(`${this.config.controllerDirectory}/${route.controller}/${route.controller}.controller.ts`);
                             }
 
-                            const apollo :ApolloType = buildApolloObj({
+                            const apollo :Apollo<custom> = buildApolloObj({
                                 config: this.config,
                                 req,
                                 res,

@@ -1,16 +1,17 @@
 import { policyMethod } from "../routes/Policies";
 import {Route} from "../routes/Route";
+import { ObjectOfAnything } from "./Common";
 import {PaginationConfig} from "./PaginationTypes";
 
-type PolicyFunctions = {
-    [key :string] :policyMethod
+type PolicyFunctions<custom> = {
+    [key :string] :policyMethod<custom>
 };
 
-type Policies<T> = {
-    [key in keyof T] :policyMethod // eslint-disable-line no-unused-vars
+type Policies<T, custom> = {
+    [key in keyof T] :policyMethod<custom> // eslint-disable-line no-unused-vars
 };
 
-export interface ApolloConfig<PolicyOptions=PolicyFunctions> {
+export interface ApolloConfig<custom=ObjectOfAnything, PolicyOptions=PolicyFunctions<custom>> {
     environments :Record<string, {url :string}>
 
     /** Your app routes */
@@ -20,7 +21,7 @@ export interface ApolloConfig<PolicyOptions=PolicyFunctions> {
     controllerDirectory :string,
 
     /** Route policy definitions */
-    policies ?:Policies<PolicyOptions>
+    policies ?:Policies<PolicyOptions, custom>
 
     /** Customize Apollo's built in config */
     pagination ?:PaginationConfig

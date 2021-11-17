@@ -1,5 +1,5 @@
 import {mock} from "sinon";
-import {buildApolloObj, ApolloType} from "../../core/Apollo";
+import {buildApolloObj, Apollo} from "../../core/Apollo";
 import {mockConfig} from "./mockConfig";
 
 type MockedApollo = {
@@ -10,7 +10,7 @@ type MockedApollo = {
     currentRoute ?:any
 }
 
-export const mockApollo = (mocked ?:MockedApollo) :ApolloType=>{
+export const mockApollo = (mocked ?:MockedApollo) :Apollo=>{
     return buildApolloObj({
         config: mockConfig,
         req: (mocked||{}).req || <any>mock(),

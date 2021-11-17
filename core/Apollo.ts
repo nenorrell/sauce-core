@@ -3,17 +3,16 @@ import {ApolloConfig} from "./resources/ApolloConfig";
 import {ObjectOfAnything} from "./resources/Common";
 import {Route} from "./routes/Route";
 
-export type ApolloType = {
+export type Apollo<custom=ObjectOfAnything> = {
     req :Request;
     res :Response;
     next :NextFunction;
     app :Application;
     currentRoute :Route;
     config :ApolloConfig;
-};
-
-export type ApolloBuild <T> = ApolloType & {custom ?:T}
-export const buildApolloObj = <T=ObjectOfAnything>({req, res, next, app, currentRoute, config, custom}:ApolloBuild<T>) :ApolloType => {
+    custom ?:custom
+}
+export const buildApolloObj = <custom=ObjectOfAnything>({req, res, next, app, currentRoute, config, custom}:Apollo<custom>) :Apollo<custom> => {
     let Apollo = {
         req,
         res,
