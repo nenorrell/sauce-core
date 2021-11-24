@@ -1,6 +1,6 @@
-import {ApolloConfig} from "../../core";
+import {ApolloConfig, Route} from "../../core";
 import { ObjectOfAnything } from "../../core/resources/Common";
-import {mockRouteParam, mockRouteWithPathParams} from "./mockRoute";
+import * as path from "path";
 
 interface MockPolicyOptions{
     policyOne: ()=>Promise<void>,
@@ -8,15 +8,13 @@ interface MockPolicyOptions{
 }
 
 export const mockConfig :ApolloConfig<ObjectOfAnything, MockPolicyOptions> = {
-    controllerDirectory: "",
+    controllerDirectory: path.resolve(__dirname, "./"),
     routes: [
-        mockRouteWithPathParams([
-            mockRouteParam({
-                name: "param1",
-                type: "string",
-                isRequired: true
-            })
-        ])
+        new Route()
+            .setMethod("GET")
+            .setPath("/test")
+            .setController("testController")
+            .setAction("index")
     ],
     policies: {
         policyOne: async ()=>{},
