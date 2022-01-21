@@ -13,7 +13,7 @@ export type Apollo<custom=ObjectOfAnything> = {
     custom ?:custom
 }
 export const buildApolloObj = <custom=ObjectOfAnything>({req, res, next, app, currentRoute, config, custom}:Apollo<custom>) :Apollo<custom> => {
-    let Apollo = {
+    let Apollo :Apollo<custom> = {
         req,
         res,
         next,
@@ -24,7 +24,7 @@ export const buildApolloObj = <custom=ObjectOfAnything>({req, res, next, app, cu
     if(custom) {
         Apollo = {
             ...Apollo,
-            ...custom
+            custom
         };
     }
     return Apollo;

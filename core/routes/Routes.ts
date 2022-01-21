@@ -7,6 +7,7 @@ import { yellow } from "chalk";
 import { Application, NextFunction, Request, Response } from "express";
 import { Apollo, buildApolloObj } from "../Apollo";
 import { Controller } from "../Controller";
+import { ObjectOfAnything } from "../resources/Common";
 
 interface RouteLifecycleHooks{
     /**
@@ -124,7 +125,7 @@ export class Routes {
 
 
     /** This should only run on startup so it's fine that it's not async */
-    public bindRotues<custom>({app, routeHooks, apolloCustom}:BindRoutesArgs<custom>) :void {
+    public bindRotues<custom=ObjectOfAnything>({app, routeHooks, apolloCustom}:BindRoutesArgs<custom>) :void {
         this.routesArray.forEach(route =>{
             try{
                 if(route.excludedEnvironments && route.excludedEnvironments.includes(process.env.ENV)) {
