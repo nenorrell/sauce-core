@@ -20,7 +20,7 @@ unit_test:
 	docker run -i --rm -p "9199:9200" \
 	-v `pwd`:/usr/src/app \
 	-w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc \
+	node_modules/.bin/nyc --reporter=cobertura --report-dir=./coverage-unit \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(UNIT_TEST) -R spec --color --verbose
