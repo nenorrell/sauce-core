@@ -3,7 +3,6 @@ import {mock} from "sinon";
 import { mockConfig } from "../test-utils/mockConfig";
 import { mockRouteWithPathParams } from "../test-utils/mockRoute";
 import { buildApolloObj } from "../../core";
-import { testApp } from "../test-utils/testApp";
 
 describe("Apollo Tests", ()=> {
     describe("buildApolloObj()", ()=>{
@@ -23,7 +22,6 @@ describe("Apollo Tests", ()=> {
                 }]),
                 res: <any>mock(),
                 next: <any>mock(),
-                // app: testApp.getApp(),
                 app: <any>mock(),
                 config: mockConfig,
             };

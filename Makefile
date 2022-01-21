@@ -14,7 +14,7 @@ lint:
 lint-fix:
 	docker run -i --rm --name lint-fix-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint:fix
 
-test: install unit_test integration-test-run
+test: install unit_test integration-test-run lint
 
 unit_test:
 	docker run -i --rm -p "9199:9200" \
