@@ -23,7 +23,7 @@ export class Policies<custom=ObjectOfAnything> {
             await policy(this.Apollo);
         }
         catch(err) {
-            throw new Error(err);
+            throw err;
         }
     }
 

@@ -29,7 +29,6 @@ describe("Apollo Tests", ()=> {
 
         it("Should build Apollo object without custom", done =>{
             const apollo = buildApolloObj(apolloObj);
-            console.log(apollo);
             expect(apollo).to.deep.equal({
                 ...apolloObj
             });
