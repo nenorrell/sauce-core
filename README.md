@@ -1,6 +1,6 @@
 # Apollo API
 
-<img src="https://gitlab.com/apollo-api/core/-/blob/master/apollo-logo.png" alt="drawing" width="300px"/>
+<img src="https://gitlab.com/apollo-api/core/-/raw/master/apollo-logo.png" alt="drawing" width="300px"/>
 
 [![pipeline status](https://gitlab.com/apollo-api/core/badges/master/pipeline.svg)](https://gitlab.com/apollo-api/core/commits/master)
 
