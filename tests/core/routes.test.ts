@@ -7,7 +7,7 @@ import {mockConfig} from "../test-utils/mockConfig";
 let routes :Routes;
 describe("Routes", ()=> {
     beforeEach(()=>{
-        routes = new Routes(mockConfig);
+        routes = new Routes(mockConfig());
     });
 
     describe("formatRoutes()", ()=> {

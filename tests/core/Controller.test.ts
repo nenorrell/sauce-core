@@ -1,13 +1,77 @@
+import {mock} from "sinon";
 import {expect} from "chai";
 import {mockApollo} from "../test-utils/mockApollo";
 import {Controller} from "../../core/Controller";
 import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../test-utils/mockRoute";
 import {RouteParam} from "../../core/routes/RouteParam";
+import { setPolicies } from "../../core/routes/Policies";
+import { Route } from "../../core";
 
 
 let controller :Controller;
 
 describe("Controller", ()=> {
+    describe("checkPolicies()", ()=>{
+        it("Should run route policy", async ()=>{
+            const testPolicy = mock();
+            const currentRoute = new Route()
+                .setMethod("GET")
+                .setPolicies(["testPolicy"]);
+
+            const Apollo = mockApollo({
+                req: {
+                    params: {
+                        userId: "1"
+                    },
+                    path: "/users/1"
+                },
+                currentRoute,
+                config: {
+                    policies: {
+                        testPolicy
+                    }
+                }
+            });
+
+            controller = new Controller(Apollo);
+            const policyList = setPolicies(Apollo.config.policies);
+            await controller.checkPolicies(policyList);
+
+            expect(testPolicy.calledOnce).to.eq(true);
+        });
+
+        it("Should only policies associated with route", async ()=>{
+            const testPolicy = mock();
+            const someOtherTestPolicy = mock();
+            const currentRoute = new Route()
+                .setMethod("GET")
+                .setPolicies(["someOtherTestPolicy"]);
+
+            const Apollo = mockApollo({
+                req: {
+                    params: {
+                        userId: "1"
+                    },
+                    path: "/users/1"
+                },
+                currentRoute,
+                config: {
+                    policies: {
+                        testPolicy,
+                        someOtherTestPolicy
+                    }
+                }
+            });
+
+            controller = new Controller(Apollo);
+            const policyList = setPolicies(Apollo.config.policies);
+            await controller.checkPolicies(policyList);
+
+            expect(testPolicy.calledOnce).to.eq(false);
+            expect(someOtherTestPolicy.calledOnce).to.eq(true);
+        });
+    });
+
     describe("validatePathParams()", ()=>{
         it("Should not throw error if param matches validations", async ()=>{
             const Apollo = mockApollo({
