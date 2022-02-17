@@ -3,17 +3,18 @@ services:
   - docker:dind
 
 stages:
-  - test
-  - post-merge-tests
+  - pr-test
+  - post-merge-test
   
 run-tests:  
-  stage: test
+  stage: pr-test
   except:
     - schedules
   before_script:
     - apk add --no-cache curl
     - apk add --no-cache make
     - apk add --no-cache docker-compose
+  
   script:
     - make test
   only:
@@ -24,11 +25,23 @@ run-tests:
     reports:
       cobertura: [coverage-unit/cobertura-coverage.xml, coverage-integration/cobertura-coverage.xml]
   
-post-merge-tests:
-  resource_group: 
-  stage: post-merge-tests
+post-merge-test:
+  resource_group: post-merge-test
+  stage: post-merge-test
   when: on_success
 
   artifacts:
     reports:
       cobertura: [coverage-unit/cobertura-coverage.xml, coverage-integration/cobertura-coverage.xml]
+  
+  before_script:
+    - apk add --no-cache curl
+    - apk add --no-cache make
+    - apk add --no-cache docker-compose
+  
+  script:
+    - make test
+
+  only:
+    refs:
+      - master
