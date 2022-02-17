@@ -21,7 +21,7 @@ export class App {
     private bindRoutes() :void {
         console.log("Binding Routes...");
 
-        new Routes(mockConfig).bindRotues({
+        new Routes(mockConfig()).bindRotues({
             app: this.app,
             routeHooks: {
                 before: null,
@@ -52,7 +52,7 @@ export class App {
 
     private setupHttpServer() :void {
         this.app.listen(this.port, () => {
-            new Rocket(mockConfig).launch();
+            new Rocket(mockConfig()).launch();
             console.log(`Apollo API has launched on port ${this.port}!`);
         });
     }

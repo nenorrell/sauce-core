@@ -2,37 +2,28 @@ import { Apollo } from "../Apollo";
 import {ApolloConfig} from "../resources/ApolloConfig";
 import { ObjectOfAnything } from "../resources/Common";
 
-export type policyMethod<custom> = (Apollo :Apollo<custom>)=>Promise<void>
-export class Policies<custom=ObjectOfAnything> {
-    private list :Map<String, policyMethod<custom>> = new Map();
+export type policyMethod<custom> = (Apollo :Apollo<custom>)=>Promise<void>;
+export type policyList<custom> = Map<String, policyMethod<custom>>;
 
-    constructor(private config :ApolloConfig, private Apollo :Apollo<custom>) {
-        try{
-            if(config.policies) {
-                this.setPolicies(config.policies);
-            }
-        }
-        catch(e) {
-            throw e;
-        }
+export function setPolicies<custom=ObjectOfAnything>(policies :ApolloConfig["policies"]) {
+    const list :policyList<custom> = new Map();
+    if(policies) {
+        const policyKeys = Object.keys(policies);
+        policyKeys.forEach((name) => list.set(name, policies[name]));
     }
+    return list;
+};
 
-    public async runPolicy(policyName :string) :Promise<void> {
+export class Policies<custom=ObjectOfAnything> {
+    constructor(private policyList :policyList<custom>) {}
+
+    public async runPolicy(policyName :string, Apollo :Apollo<custom>) :Promise<void> {
         try{
-            const policy = this.list.get(policyName);
-            await policy(this.Apollo);
+            const policy = this.policyList.get(policyName);
+            await policy(Apollo);
         }
         catch(err) {
             throw err;
         }
-    }
-
-    private setPolicies(policies :ApolloConfig["policies"]) :void {
-        const policyKeys = Object.keys(policies);
-
-        // It's super not ideal to use .forEach here since it's blocking. But
-        // it should be pretty much a non factor since routes will typically
-        // only have just a few policies
-        policyKeys.forEach((name) => this.list.set(name, policies[name]));
     }
 }

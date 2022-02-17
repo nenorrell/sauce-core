@@ -1,7 +1,7 @@
 import {Responses} from "./Responses";
 import {RouteParam, ParamDataTypes} from "./routes/RouteParam";
 import {formatError, asyncForEach} from "./utility";
-import {Policies} from "./routes/Policies";
+import {Policies, policyList} from "./routes/Policies";
 import { Apollo } from "./Apollo";
 import { ObjectOfAnything } from "./resources/Common";
 
@@ -24,11 +24,11 @@ export class Controller<custom=ObjectOfAnything> {
         this.responses = new Responses(this.res);
     }
 
-    public async checkPolicies() :Promise<void> {
-        const policies = new Policies(this.config, this.Apollo);
+    public async checkPolicies(policyList :policyList<custom>) :Promise<void> {
+        const policies = new Policies<custom>(policyList);
         if (this.route.policies) {
             await asyncForEach(this.route.policies, async policyName => {
-                await policies.runPolicy(policyName);
+                await policies.runPolicy(policyName, this.Apollo);
             });
         }
     }

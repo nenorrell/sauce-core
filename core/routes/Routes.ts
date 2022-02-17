@@ -8,6 +8,7 @@ import { Application, NextFunction, Request, Response } from "express";
 import { Apollo, buildApolloObj } from "../Apollo";
 import { Controller } from "../Controller";
 import { ObjectOfAnything } from "../resources/Common";
+import { setPolicies } from "./Policies";
 
 interface RouteLifecycleHooks{
     /**
@@ -132,8 +133,14 @@ export class Routes {
                     log(this.config, "info", yellow(`Excluding ${route.path} for this environment`));
                 }
                 else {
+                    const policyList = setPolicies<custom>(this.config.policies);
+
                     log(this.config, "debug", `Binding ${route.path}`);
                     app[route.method](route.path, async (req :Request, res :Response, next :NextFunction)=>{
+                        /**
+                         * BEWARE, anything inside this block is inside of the
+                         * request itself. Avoid non async logic from here on
+                        */
                         try{
                             if(routeHooks?.before) {
                                 await routeHooks.before(route, app, req, res, next);
@@ -160,7 +167,7 @@ export class Routes {
                             const controllerClassName = Object.keys(controller)[0];
                             controller = new controller[controllerClassName](apollo);
                             await controller.runValidations();
-                            await controller.checkPolicies();
+                            await controller.checkPolicies(policyList);
                             controller[route.action](req, res, next);
                         }
                         catch(e) {
