@@ -24,7 +24,7 @@ run-tests:
 	-e ENV="local" \
 	-e JWT_PRIVATE="Test-private-key" \
 	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage-integration \
+	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(ALL_TESTS) -R spec --color --verbose --exit
