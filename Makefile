@@ -58,7 +58,7 @@ compile:
 publish: test
 	npm publish --access=public
 
-publish-ci:
+publish-ci: install
 	docker run -i --rm -p "9198:1337" \
 	-v `pwd`:/usr/src/app -w /usr/src/app \
 	node:${NODE} NPM_TOKEN=$(NPM_TOKEN) ./.bin/publish-ci.sh
