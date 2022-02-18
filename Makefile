@@ -1,6 +1,7 @@
 NODE=14
 UNIT_TEST := "tests/**/*.test.ts"
 INTEGRATION_TEST := "tests/**/*.int-test.ts"
+ALL_TESTS := "tests/**/*test.ts"
 
 clean:
 	./bin/clean.sh
@@ -14,13 +15,25 @@ lint:
 lint-fix:
 	docker run -i --rm --name lint-fix-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint:fix
 
-test: install unit_test integration-test-run lint
+test: install run-tests lint
+
+
+run-tests:
+	docker run -i --rm -p "9198:1337" \
+	-e NODE_ENV=test \
+	-e ENV="local" \
+	-e JWT_PRIVATE="Test-private-key" \
+	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
+	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage-integration \
+	node_modules/.bin/mocha \
+	--require ts-node/register \
+	$(ALL_TESTS) -R spec --color --verbose --exit
 
 unit_test:
 	docker run -i --rm -p "9199:9200" \
 	-v `pwd`:/usr/src/app \
 	-w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc --reporter=cobertura --report-dir=./coverage-unit \
+	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage-unit \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(UNIT_TEST) -R spec --color --verbose
@@ -31,7 +44,7 @@ integration-test-run:
 	-e ENV="local" \
 	-e JWT_PRIVATE="Test-private-key" \
 	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc --reporter=cobertura --report-dir=./coverage-integration \
+	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage-integration \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(INTEGRATION_TEST) -R spec --color --verbose --exit
