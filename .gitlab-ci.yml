@@ -4,6 +4,7 @@ services:
 
 stages:
   - test
+  - publish
   
 test:
   stage: test
@@ -12,13 +13,32 @@ test:
   before_script:
     - apk add --no-cache curl
     - apk add --no-cache make
-    - apk add --no-cache docker-compose
   
   script:
     - make test
   only:
     refs:
       - merge_requests
+      - master
+  
+  artifacts:
+    reports:
+      cobertura: [coverage/cobertura-coverage.xml, coverage/cobertura-coverage.xml]
+  
+publish:
+  stage: publish
+  needs: ["test"]
+  except:
+    - schedules
+  before_script:
+    - apk add --no-cache curl
+    - apk add --no-cache make
+
+  script:
+    - make publish-ci NPM_TOKEN=$NPM_TOKEN
+
+  only:
+    refs:
       - master
   
   artifacts:

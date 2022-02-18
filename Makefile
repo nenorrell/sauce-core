@@ -24,7 +24,7 @@ run-tests:
 	-e ENV="local" \
 	-e JWT_PRIVATE="Test-private-key" \
 	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage \
+	node_modules/.bin/nyc --reporter=text --reporter=cobertura --report-dir=./coverage \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(ALL_TESTS) -R spec --color --verbose --exit
@@ -33,7 +33,7 @@ unit_test:
 	docker run -i --rm -p "9199:9200" \
 	-v `pwd`:/usr/src/app \
 	-w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage-unit \
+	node_modules/.bin/nyc --reporter=text --reporter=cobertura --report-dir=./coverage-unit \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(UNIT_TEST) -R spec --color --verbose
@@ -44,7 +44,7 @@ integration-test-run:
 	-e ENV="local" \
 	-e JWT_PRIVATE="Test-private-key" \
 	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
-	node_modules/.bin/nyc --reporter=text-summary --reporter=cobertura --report-dir=./coverage-integration \
+	node_modules/.bin/nyc --reporter=text --reporter=cobertura --report-dir=./coverage-integration \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(INTEGRATION_TEST) -R spec --color --verbose --exit
@@ -57,3 +57,8 @@ compile:
 
 publish: test
 	npm publish --access=public
+
+publish-ci:
+	docker run -i --rm -p "9198:1337" \
+	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
+	npm config set //registry.npmjs.org/:_authToken $(NPM_TOKEN) && npm publish --access=public
