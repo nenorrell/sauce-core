@@ -23,7 +23,7 @@ describe("Apollo Tests", ()=> {
                 res: <any>mock(),
                 next: <any>mock(),
                 app: <any>mock(),
-                config: mockConfig,
+                config: mockConfig(),
             };
         });
 
