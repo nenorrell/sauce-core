@@ -60,5 +60,5 @@ publish: test
 
 publish-ci:
 	docker run -i --rm -p "9198:1337" \
-	-v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} \
-	npm config set //registry.npmjs.org/:_authToken $(NPM_TOKEN) && npm publish --access=public
+	-v `pwd`:/usr/src/app -w /usr/src/app \
+	node:${NODE} npm config set //registry.npmjs.org/:_authToken $(NPM_TOKEN) && npm publish --access=public
