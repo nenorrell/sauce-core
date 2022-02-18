@@ -1,12 +1,21 @@
-# Apollo API
+[![pipeline status](https://gitlab.com/apollo-api/core/badges/master/pipeline.svg)](https://gitlab.com/apollo-api/core/commits/master)
+[![coverage report](https://gitlab.com/apollo-api/core/badges/master/coverage.svg)](https://gitlab.com/apollo-api/core/-/commits/master)
 
+# Apollo API
 <img src="https://gitlab.com/apollo-api/core/-/raw/master/apollo-logo.png" alt="drawing" width="300px"/>
 
-[![pipeline status](https://gitlab.com/apollo-api/core/badges/master/pipeline.svg)](https://gitlab.com/apollo-api/core/commits/master)
+Apollo core is the heart of the Apollo framework. Apollo is built on Express.js & Typescript.
 
-Apollo is a RESTful API built on Express.js & Typescript.
+Essentially, it's Express.js with Typescript and a couple nice things out of the box like:
 
-It's essentially Express.js with Typescript and a couple of out of the box things built for you such as routing, route param data type enforcement, route policies, etc.
+* Simplified route handling, creation, and organization
+* Wire routes to controllers
+* Route policies
+* Route param data type enforcement
+    * Validate query params, body params, & path params all from your route definition
 
-## Running tests
-Easily run tests by running the `make test` command
+## Running core tests
+Easily run tests by running the `make test` command. Assumes Docker is installed.
+
+## Example project
+See the example project consuming Apollo-core here: https://gitlab.com/apollo-api/template
