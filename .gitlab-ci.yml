@@ -40,7 +40,3 @@ publish:
   only:
     refs:
       - master
-  
-  artifacts:
-    reports:
-      cobertura: [coverage/cobertura-coverage.xml, coverage/cobertura-coverage.xml]
