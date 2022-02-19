@@ -15,5 +15,5 @@
     "outDir": "./dist"
   },
   "include": ["core"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".bin"]
 }

@@ -17,7 +17,6 @@ lint-fix:
 
 test: install run-tests lint
 
-
 run-tests:
 	docker run -i --rm -p "9198:1337" \
 	-e NODE_ENV=test \
@@ -61,4 +60,5 @@ publish: test
 publish-ci:
 	docker run -i --rm -p "9198:1337" \
 	-v `pwd`:/usr/src/app -w /usr/src/app \
-	node:${NODE} NPM_TOKEN=$(NPM_TOKEN) ./.bin/publish-ci.sh
+	-e NPM_TOKEN=$(NPM_TOKEN) \
+	node:${NODE} ./.bin/publish-ci.js
