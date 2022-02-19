@@ -1,7 +1,7 @@
 NODE=14
 UNIT_TEST := "tests/**/*.test.ts"
 INTEGRATION_TEST := "tests/**/*.int-test.ts"
-ALL_TESTS := "tests/**/*test.ts"
+TEST := "tests/**/*test.ts"
 
 clean:
 	./bin/clean.sh
@@ -26,7 +26,7 @@ run-tests:
 	node_modules/.bin/nyc --reporter=text --reporter=cobertura --report-dir=./coverage \
 	node_modules/.bin/mocha \
 	--require ts-node/register \
-	$(ALL_TESTS) -R spec --color --verbose --exit
+	$(TEST) -R spec --color --verbose --exit
 
 unit_test:
 	docker run -i --rm -p "9199:9200" \

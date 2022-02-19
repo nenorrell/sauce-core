@@ -68,7 +68,7 @@ export const formatArrayResponse = (code :number, data :Array<any>) :IArrayRespo
     };
 };
 
-export const formatErrorResponse = (code :number, error :string, errorDescription :any) :IErrorResponse =>{
+export const formatErrorResponse = (code :number, error :string, errorDescription ?:any) :IErrorResponse =>{
     return {
         response: {},
         code,
