@@ -1,5 +1,5 @@
 export type PaginatedObject = {
-    data :any;
+    data :any[];
     page: {
         size :number;
         prev :string;

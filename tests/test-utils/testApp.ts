@@ -7,10 +7,12 @@ export class App {
     public app :Application;
     public port :number = 1337;
 
-    constructor() {
+    constructor(bindRoutes :boolean = true) {
         this.app = express();
         this.setupBodyParsers();
-        this.bindRoutes();
+        if(bindRoutes) {
+            this.bindRoutes();
+        }
     }
 
     private setupBodyParsers() :void {
