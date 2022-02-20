@@ -1,13 +1,17 @@
 import {expect} from "chai";
+import {spy, SinonSpy} from "sinon";
 import {Routes} from "../../core/routes/Routes";
 import {Route} from "../../core/routes/Route";
 import {RouteParam} from "../../core/routes/RouteParam";
 import {mockConfig} from "../test-utils/mockConfig";
+import * as policyMethods from "../../core/routes/Policies";
+import {App} from "../test-utils/testApp";
 
-let routes :Routes;
 describe("Routes", ()=> {
+    let routes :Routes;
+    const config = mockConfig();
     beforeEach(()=>{
-        routes = new Routes(mockConfig());
+        routes = new Routes(config);
     });
 
     describe("formatRoutes()", ()=> {
@@ -126,6 +130,31 @@ describe("Routes", ()=> {
                     }
                 }
             }]);
+        });
+    });
+
+    describe("bindRotues()", ()=>{
+        let setPolicySpy :SinonSpy;
+        beforeEach(()=>{
+            setPolicySpy = spy(policyMethods, "setPolicies");
+        });
+
+        afterEach(()=>{
+            setPolicySpy.restore();
+        });
+
+        it("Should set policies while building routes", (done)=>{
+            routes.bindRotues({
+                app: new App(false).getApp(),
+                routeHooks: {
+                    before: null,
+                    after: null
+                },
+                apolloCustom: {},
+            });
+
+            expect(setPolicySpy.calledOnceWithExactly(config.policies)).to.eq(true);
+            done();
         });
     });
 });

@@ -183,6 +183,7 @@ export class Routes {
             }
             catch(e) {
                 log(this.config, "error", "FAILED BINDING ROUTE: ", e);
+                throw e;
             }
         });
     }
