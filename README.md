@@ -2,7 +2,7 @@
 [![coverage report](https://gitlab.com/apollo-api/core/badges/master/coverage.svg)](https://gitlab.com/apollo-api/core/-/commits/master)
 
 # Apollo API
-<img src="https://gitlab.com/apollo-api/core/-/raw/master/apollo-logo.png" alt="drawing" width="300px"/>
+<img src="https://gitlab.com/apollo-api/core/-/raw/master/apollo-logo-earth-bg.png" alt="drawing" width="300px"/>
 
 Apollo core is the heart of the Apollo framework. Apollo is built on Express.js & Typescript.
 
