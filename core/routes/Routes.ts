@@ -124,6 +124,18 @@ export class Routes {
         await asyncForEach(params, param =>cleanObject(param));
     }
 
+    private getControllerClass(route :Route) :Controller {
+        let controller :Controller;
+        const extension = this.config.controllerExtension || "ts";
+
+        if(route.customControllerPath) {
+            controller = require(`${this.config.controllerDirectory}/${route.customControllerPath}`);
+        }
+        else{
+            controller = require(`${this.config.controllerDirectory}/${route.controller}/${route.controller}.controller.${extension}`);
+        }
+        return controller;
+    }
 
     /** This should only run on startup so it's fine that it's not async */
     public bindRotues<custom=ObjectOfAnything>({app, routeHooks, apolloCustom}:BindRoutesArgs<custom>) :void {
@@ -146,14 +158,7 @@ export class Routes {
                                 await routeHooks.before(route, app, req, res, next);
                             }
 
-                            let controller :Controller;
-                            if(route.customControllerPath) {
-                                controller = require(`${this.config.controllerDirectory}/${route.customControllerPath}`);
-                            }
-                            else{
-                                controller = require(`${this.config.controllerDirectory}/${route.controller}/${route.controller}.controller.ts`);
-                            }
-
+                            let controller = this.getControllerClass(route);
                             const apollo :Apollo<custom> = buildApolloObj({
                                 config: this.config,
                                 req,

@@ -26,6 +26,11 @@ export interface ApolloConfig<custom=ObjectOfAnything, PolicyOptions=PolicyFunct
     /** Customize Apollo's built in config */
     pagination ?:PaginationConfig
 
+    /** Tell Apollo what file type your controllers are.
+     *  @default "ts"
+    */
+    controllerExtension ?:string
+
     /** Disable Apollo logs */
     disableLogs ?:boolean
 
