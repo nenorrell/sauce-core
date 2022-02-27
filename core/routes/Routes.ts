@@ -45,12 +45,12 @@ export class Routes {
         this.routesArray = config.routes;
     }
 
-    public async getFormattedRoutes() :Promise<any[]> {
-        const formatted = await this.formatRoutes(this.routesArray);
+    public async getFormattedRoutes(stripHidden ?:boolean) :Promise<any[]> {
+        const formatted = await this.formatRoutes(this.routesArray, stripHidden);
         return this.sortRoutes(this.processRoutes(formatted));
     }
 
-    public processRoutes(routes :Array<any>) :Array<any> {
+    public processRoutes(routes :any[]) :Array<any> {
         return routes.map((route)=>{
             if(route.tag) { // Is a group of routes
                 this.sortRoutes(route.routes);
@@ -59,7 +59,7 @@ export class Routes {
         });
     }
 
-    public sortRoutes(routes) :Array<Route> {
+    public sortRoutes(routes) :Route[] {
         return routes.sort((a, b)=>{
             const route1 = a.path ? a.path.replace(/[.-]/, "") : "";
             const route2 = b.path ? b.path.replace(/[.-]/, "") : "";
@@ -73,47 +73,49 @@ export class Routes {
         });
     }
 
-    public async formatRoutes(routes :Array<Route>) :Promise<any[]> {
-        const groupedRoutes :Map<string, Array<any>> = new Map();
-        const ungroupedRoutes :Array<any> = [];
+    private async formatRoutes(routes :Route[], stripHidden ?:boolean) :Promise<any[]> {
+        const groupedRoutes :Map<string, any[]> = new Map();
+        const ungroupedRoutes :any[] = [];
 
         await asyncForEach(routes, async (route)=>{
-            const formattedObj = {
-                method: route.method,
-                path: route.path,
-                controller: route.controller,
-                action: route.action,
-                policies: route.policies,
-                description: route.description,
-                isDeprecated: route.isDeprecated,
-                pathParams: route.getFormattedPathParams(),
-                queryParams: route.getFormattedQueryParams(),
-                bodySchema: route.getFormattedBodySchema()
-            };
-            if(formattedObj.pathParams) {
-                this.cleanRouteParams(formattedObj.pathParams);
-            }
-            if(formattedObj.queryParams) {
-                this.cleanRouteParams(formattedObj.queryParams);
-            }
-            if(formattedObj.bodySchema) {
-                cleanObject(formattedObj.bodySchema);
-            }
-            cleanObject(formattedObj);
+            if(!(stripHidden && route.hidden)) {
+                const formattedObj = {
+                    method: route.method,
+                    path: route.path,
+                    controller: route.controller,
+                    action: route.action,
+                    policies: route.policies,
+                    description: route.description,
+                    isDeprecated: route.isDeprecated,
+                    pathParams: route.getFormattedPathParams(),
+                    queryParams: route.getFormattedQueryParams(),
+                    bodySchema: route.getFormattedBodySchema()
+                };
+                if(formattedObj.pathParams) {
+                    this.cleanRouteParams(formattedObj.pathParams);
+                }
+                if(formattedObj.queryParams) {
+                    this.cleanRouteParams(formattedObj.queryParams);
+                }
+                if(formattedObj.bodySchema) {
+                    cleanObject(formattedObj.bodySchema);
+                }
+                cleanObject(formattedObj);
 
-            if(typeof route.tag !== "undefined") {
-                const tag = route.tag;
-                if(groupedRoutes.has(tag)) {
-                    const group = groupedRoutes.get(tag);
-                    group.push(formattedObj);
-                    groupedRoutes.set(tag, group);
+                if(typeof route.tag !== "undefined") {
+                    const tag = route.tag;
+                    if(groupedRoutes.has(tag)) {
+                        const group = groupedRoutes.get(tag);
+                        group.push(formattedObj);
+                        groupedRoutes.set(tag, group);
+                    }
+                    else{
+                        groupedRoutes.set(tag, [formattedObj]);
+                    }
                 }
                 else{
-                    groupedRoutes.set(tag, [formattedObj]);
+                    ungroupedRoutes.push(formattedObj);
                 }
-            }
-            else{
-                ungroupedRoutes.push(formattedObj);
             }
         });
         const groupedRoutesArray = Array.from(groupedRoutes, ([tag, routes]) => ({tag, routes}));

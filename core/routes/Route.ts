@@ -19,7 +19,7 @@ export class Route {
     private formattedBodySchema :any;
     private formattedQueryParams :any;
     public excludedEnvironments :string[];
-    public hideFromDocs :boolean;
+    public hidden :boolean;
     public queryParamKeys :string[] = [];
     public exampleResponse :ApolloResponseType;
     public isDeprecated :boolean = false;
@@ -93,8 +93,8 @@ export class Route {
         return this;
     }
 
-    public setHideFromDocs(hideFromDocs :boolean) :Route {
-        this.hideFromDocs = hideFromDocs;
+    public setHidden(hidden :boolean) :Route {
+        this.hidden = hidden;
         return this;
     }
 
