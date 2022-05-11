@@ -21,10 +21,6 @@ test:
       - merge_requests
       - master
   
-  artifacts:
-    reports:
-      cobertura: [coverage/cobertura-coverage.xml, coverage/cobertura-coverage.xml]
-  
 publish:
   stage: publish
   needs: ["test"]

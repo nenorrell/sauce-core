@@ -229,7 +229,7 @@ export class Controller<custom=ObjectOfAnything> {
         }
     }
 
-    private parseBool(stringIn :string) :Boolean {
+    private parseBool(stringIn :string) :boolean {
         try{
             if(stringIn === "false") {
                 return false;
