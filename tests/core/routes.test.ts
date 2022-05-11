@@ -73,7 +73,13 @@ describe("Routes", ()=> {
                                         .setType("number")
                                 ])
                         ])
-                ]);
+                ])
+                .setExampleResponse({
+                    code: 200,
+                    response: {
+                        some: "value",
+                    },
+                });
 
             routes.routesArray = [testRoute];
             const formattedVals = await routes.getFormattedRoutes();
@@ -84,6 +90,12 @@ describe("Routes", ()=> {
                 path: "/examples/complex/:someParam",
                 action: "index",
                 description: "This endpoint is an example of what a more complex route might look like",
+                exampleResponse: {
+                    code: 200,
+                    response: {
+                        some: "value",
+                    },
+                },
                 isDeprecated: false,
                 pathParams: [
                     {

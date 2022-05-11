@@ -89,7 +89,8 @@ export class Routes {
                     isDeprecated: route.isDeprecated,
                     pathParams: route.getFormattedPathParams(),
                     queryParams: route.getFormattedQueryParams(),
-                    bodySchema: route.getFormattedBodySchema()
+                    bodySchema: route.getFormattedBodySchema(),
+                    exampleResponse: route.exampleResponse
                 };
                 if(formattedObj.pathParams) {
                     this.cleanRouteParams(formattedObj.pathParams);
