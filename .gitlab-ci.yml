@@ -8,6 +8,7 @@ stages:
   
 test:
   stage: test
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   except:
     - schedules
   before_script:
