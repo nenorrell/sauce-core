@@ -7,12 +7,12 @@ import { ObjectOfAnything } from "./resources/Common";
 
 export class Controller<custom=ObjectOfAnything> {
     protected responses :Responses;
-    protected req;
-    protected currentRoute;
-    protected res;
-    protected next;
-    protected route;
-    protected config;
+    protected req :Apollo["req"];
+    protected currentRoute :Apollo["currentRoute"];
+    protected res :Apollo["res"];
+    protected next :Apollo["next"];
+    protected route :Apollo["currentRoute"];
+    protected config :Apollo["config"];
 
     constructor(protected Apollo :Apollo<custom>) {
         this.req = Apollo.req;
