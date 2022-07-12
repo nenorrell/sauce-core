@@ -9,24 +9,10 @@ import { Apollo, buildApolloObj } from "../Apollo";
 import { Controller } from "../Controller";
 import { ObjectOfAnything } from "../resources/Common";
 import { setPolicies } from "./Policies";
-
-interface RouteLifecycleHooks{
-    /**
-     * Run logic that needs to happen before executing the route
-     * controller method. This runs before validations & policies.
-     */
-    before(route :Route, app :Application, req :Request, res :Response, next :NextFunction) :Promise<void>
-
-    /**
-     * Run logic that needs to happen before after executing the route
-     * controller method.
-     */
-    after(route :Route, app :Application, req :Request, res :Response, next :NextFunction) :Promise<void>
-}
+import { RouteValidator } from "./RouteValidator";
 
 interface BindRoutesArgs<custom> {
     app :Application
-    routeHooks ?:RouteLifecycleHooks
     apolloCustom :Apollo<custom>["custom"]
 }
 
@@ -141,7 +127,7 @@ export class Routes {
     }
 
     /** This should only run on startup so it's fine that it's not async */
-    public bindRotues<custom=ObjectOfAnything>({app, routeHooks, apolloCustom}:BindRoutesArgs<custom>) :void {
+    public bindRotues<custom=ObjectOfAnything>({app, apolloCustom}:BindRoutesArgs<custom>) :void {
         this.routesArray.forEach(route =>{
             try{
                 if(route.excludedEnvironments && route.excludedEnvironments.includes(process.env.ENV)) {
@@ -157,10 +143,6 @@ export class Routes {
                          * request itself. Avoid non async logic from here on
                         */
                         try{
-                            if(routeHooks?.before) {
-                                await routeHooks.before(route, app, req, res, next);
-                            }
-
                             let controller = this.getControllerClass(route);
                             const apollo :Apollo<custom> = buildApolloObj({
                                 config: this.config,
@@ -174,17 +156,15 @@ export class Routes {
 
                             const controllerClassName = Object.keys(controller)[0];
                             controller = new controller[controllerClassName](apollo);
-                            await controller.runValidations();
-                            await controller.checkPolicies(policyList);
+
+                            const routeValidator = new RouteValidator(apollo);
+                            await routeValidator.runValidations();
+                            await routeValidator.checkPolicies(policyList);
+
                             controller[route.action](req, res, next);
                         }
                         catch(e) {
                             next(e);
-                        }
-                        finally {
-                            if(routeHooks?.after) {
-                                await routeHooks.after(route, app, req, res, next);
-                            }
                         }
                     });
                 }

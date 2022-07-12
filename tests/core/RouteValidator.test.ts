@@ -1,16 +1,15 @@
 import {mock} from "sinon";
 import {expect} from "chai";
 import {mockApollo} from "../test-utils/mockApollo";
-import {Controller} from "../../core/Controller";
 import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../test-utils/mockRoute";
 import {RouteParam} from "../../core/routes/RouteParam";
 import { setPolicies } from "../../core/routes/Policies";
 import { Route } from "../../core";
+import { RouteValidator } from "../../core/routes/RouteValidator";
 
+let routeValidator :RouteValidator;
 
-let controller :Controller;
-
-describe("Controller", ()=> {
+describe("RouteValidator", ()=> {
     describe("checkPolicies()", ()=>{
         it("Should run route policy", async ()=>{
             const testPolicy = mock();
@@ -33,9 +32,9 @@ describe("Controller", ()=> {
                 }
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             const policyList = setPolicies(Apollo.config.policies);
-            await controller.checkPolicies(policyList);
+            await routeValidator.checkPolicies(policyList);
 
             expect(testPolicy.calledOnce).to.eq(true);
         });
@@ -63,9 +62,9 @@ describe("Controller", ()=> {
                 }
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             const policyList = setPolicies(Apollo.config.policies);
-            await controller.checkPolicies(policyList);
+            await routeValidator.checkPolicies(policyList);
 
             expect(testPolicy.calledOnce).to.eq(false);
             expect(someOtherTestPolicy.calledOnce).to.eq(true);
@@ -87,8 +86,8 @@ describe("Controller", ()=> {
                     isRequired: true
                 }])
             });
-            controller = new Controller(Apollo);
-            const result = await controller["validatePathParams"].bind(controller)();
+            routeValidator = new RouteValidator(Apollo);
+            const result = await routeValidator["validatePathParams"].bind(routeValidator)();
             expect(result).to.be.an("array");
         });
 
@@ -114,8 +113,8 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller(Apollo);
-            expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validatePathParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should convert path param number string to number", async ()=>{
@@ -134,9 +133,9 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller(Apollo);
-            expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
-            expect(controller["req"].params.userId).to.be.a("number");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validatePathParams"].bind(routeValidator)()).to.be.an("array");
+            expect(routeValidator["req"].params.userId).to.be.a("number");
         });
 
         it("Should convert path param boolean string to bool", async ()=>{
@@ -155,9 +154,9 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller(Apollo);
-            expect(await controller["validatePathParams"].bind(controller)()).to.be.an("array");
-            expect(controller["req"].params.someParam).to.be.true;
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validatePathParams"].bind(routeValidator)()).to.be.an("array");
+            expect(routeValidator["req"].params.someParam).to.be.true;
         });
 
         it("Should throw error if param is required and not sent", async ()=>{
@@ -177,9 +176,9 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             try{
-                await controller["validatePathParams"]();
+                await routeValidator["validatePathParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
@@ -206,8 +205,8 @@ describe("Controller", ()=> {
                 }])
             });
 
-            controller = new Controller(Apollo);
-            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should not throw error if params match validations (multiple query params)", async ()=>{
@@ -233,8 +232,8 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
-            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should not throw error if an optional param isn't sent", async ()=>{
@@ -259,8 +258,8 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
-            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should convert path param number string to number", async ()=>{
@@ -279,9 +278,9 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller(Apollo);
-            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
-            expect(controller["req"].query.numberParam).to.be.a("number");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
+            expect(routeValidator["req"].query.numberParam).to.be.a("number");
         });
 
         it("Should convert path param boolean string to bool", async ()=>{
@@ -300,9 +299,9 @@ describe("Controller", ()=> {
                     }
                 ])
             });
-            controller = new Controller(Apollo);
-            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
-            expect(controller["req"].query.booleanParam).to.be.true;
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
+            expect(routeValidator["req"].query.booleanParam).to.be.true;
         });
 
         it("Should throw error if params are required and are not sent", async ()=>{
@@ -327,9 +326,9 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             try{
-                await controller["validateQueryParams"]();
+                await routeValidator["validateQueryParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
@@ -362,9 +361,9 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             try{
-                await controller["validateQueryParams"]();
+                await routeValidator["validateQueryParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
@@ -392,8 +391,8 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
-            expect(await controller["validateQueryParams"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should throw error if param value is not in enum", async ()=>{
@@ -414,9 +413,9 @@ describe("Controller", ()=> {
                 ])
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             try{
-                await controller["validateQueryParams"]();
+                await routeValidator["validateQueryParams"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
@@ -470,8 +469,8 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller(Apollo);
-            expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateReqBody"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should not throw error if an optional param isn't sent", async ()=>{
@@ -488,8 +487,8 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller(Apollo);
-            expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateReqBody"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should convert body param number string to number", async ()=>{
@@ -506,9 +505,9 @@ describe("Controller", ()=> {
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
-            controller = new Controller(Apollo);
-            expect(await controller["validateReqBody"].bind(controller)()).to.be.an("array");
-            expect(controller["req"].body.children.child2).to.be.a("number");
+            routeValidator = new RouteValidator(Apollo);
+            expect(await routeValidator["validateReqBody"].bind(routeValidator)()).to.be.an("array");
+            expect(routeValidator["req"].body.children.child2).to.be.a("number");
         });
 
         it("Should throw error if params are required and are not sent", async ()=>{
@@ -525,9 +524,9 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             try{
-                await controller["validateReqBody"]();
+                await routeValidator["validateReqBody"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({
@@ -552,9 +551,9 @@ describe("Controller", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            controller = new Controller(Apollo);
+            routeValidator = new RouteValidator(Apollo);
             try{
-                await controller["validateReqBody"]();
+                await routeValidator["validateReqBody"]();
             }
             catch(e) {
                 expect(e).to.deep.eq({

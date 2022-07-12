@@ -4,12 +4,12 @@ import {PaginatedObject, PaginationQuery, PaginationConfig} from "./resources/Pa
 import {getAppUrl, formatError} from "./utility";
 
 export class Service<custom=ObjectOfAnything> {
-    protected req;
-    protected currentRoute;
-    protected res;
-    protected next;
-    protected route;
-    protected config;
+    protected req :Apollo["req"];
+    protected currentRoute :Apollo["currentRoute"];
+    protected res :Apollo["res"];
+    protected next :Apollo["next"];
+    protected route :Apollo["currentRoute"];
+    protected config :Apollo["config"];
     protected paging :PaginationConfig & {page :number};
 
     constructor(protected Apollo :Apollo<custom>) {
