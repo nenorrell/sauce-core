@@ -1,6 +1,6 @@
 {
   "name": "@apollo-api/core",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Apollo API core functionality",
   "keywords": [
     "Apollo",
@@ -35,7 +35,7 @@
     "cors": "^2.8.5",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
-    "mocha": "^8.0.1",
+    "mocha": "^10.0.0",
     "nyc": "^15.0.0",
     "sinon": "^9.0.0",
     "supertest": "^6.1.6",
