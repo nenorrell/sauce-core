@@ -25,10 +25,6 @@ export class App {
 
         new Routes(mockConfig()).bindRotues({
             app: this.app,
-            routeHooks: {
-                before: null,
-                after: null
-            },
             apolloCustom: {},
         });
 

@@ -350,10 +350,6 @@ describe("Routes", ()=> {
         it("Should set policies while building routes", (done)=>{
             routes.bindRotues({
                 app: new App(false).getApp(),
-                routeHooks: {
-                    before: null,
-                    after: null
-                },
                 apolloCustom: {},
             });
 

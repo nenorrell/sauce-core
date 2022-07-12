@@ -16,7 +16,9 @@
     ],
     "rules": {
         "require-jsdoc": "off",
-        "indent": [2, 4],
+        "indent": [2, 4, {
+            "SwitchCase": 1
+        }],
         "arrow-parens": "off",
         "brace-style": ["error", "stroustrup"],
         "comma-dangle": "off",
