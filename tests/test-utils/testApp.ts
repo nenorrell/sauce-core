@@ -23,7 +23,7 @@ export class App {
     private bindRoutes() :void {
         console.log("Binding Routes...");
 
-        new Routes(mockConfig()).bindRotues({
+        new Routes(mockConfig()).bindRoutes({
             app: this.app,
             apolloCustom: {},
         });
