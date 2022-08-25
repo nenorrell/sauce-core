@@ -127,7 +127,7 @@ export class Routes {
     }
 
     /** This should only run on startup so it's fine that it's not async */
-    public bindRotues<custom=ObjectOfAnything>({app, apolloCustom}:BindRoutesArgs<custom>) :void {
+    public bindRoutes<custom=ObjectOfAnything>({app, apolloCustom}:BindRoutesArgs<custom>) :void {
         this.routesArray.forEach(route =>{
             try{
                 if(route.excludedEnvironments && route.excludedEnvironments.includes(process.env.ENV)) {
