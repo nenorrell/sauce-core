@@ -337,7 +337,7 @@ describe("Routes", ()=> {
         });
     });
 
-    describe("bindRotues()", ()=>{
+    describe("bindRoutes()", ()=>{
         let setPolicySpy :SinonSpy;
         beforeEach(()=>{
             setPolicySpy = spy(policyMethods, "setPolicies");
@@ -348,7 +348,7 @@ describe("Routes", ()=> {
         });
 
         it("Should set policies while building routes", (done)=>{
-            routes.bindRotues({
+            routes.bindRoutes({
                 app: new App(false).getApp(),
                 apolloCustom: {},
             });

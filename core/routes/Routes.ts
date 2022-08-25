@@ -1,5 +1,4 @@
 import {Route} from "./Route";
-import {RouteParam} from "./RouteParam";
 import {asyncForEach, cleanObject} from "../utility";
 import {ApolloConfig} from "../resources/ApolloConfig";
 import { log } from "../Logger";
@@ -10,6 +9,7 @@ import { Controller } from "../Controller";
 import { ObjectOfAnything } from "../resources/Common";
 import { setPolicies } from "./Policies";
 import { RouteValidator } from "./RouteValidator";
+import { FormattedRoute, FormattedRouteParam, RouteGrouping } from "../@types/Routes.types";
 
 interface BindRoutesArgs<custom> {
     app :Application
@@ -31,45 +31,45 @@ export class Routes {
         this.routesArray = config.routes;
     }
 
-    public async getFormattedRoutes(stripHidden ?:boolean) :Promise<any[]> {
+    public async getFormattedRoutes(stripHidden ?:boolean) :Promise<(FormattedRoute|RouteGrouping)[]> {
         const formatted = await this.formatRoutes(this.routesArray, stripHidden);
         return this.sortRoutes(this.processRoutes(formatted));
     }
 
-    public processRoutes(routes :any[]) :Array<any> {
-        return routes.map((route)=>{
-            if(route.tag) { // Is a group of routes
-                this.sortRoutes(route.routes);
+    public processRoutes(routeGroups :(FormattedRoute|RouteGrouping)[]) {
+        return routeGroups.map((group)=>{
+            if((group as RouteGrouping).tag) { // Is a group of routes
+                this.sortRoutes((group as RouteGrouping).routes);
             }
-            return route; // Is a route obj
+            return group; // Is a route obj
         });
     }
 
-    public sortRoutes(routes) :Route[] {
-        return routes.sort((a, b)=>{
+    public sortRoutes(routes :(FormattedRoute|RouteGrouping)[]) :(FormattedRoute|RouteGrouping)[] {
+        return routes.sort((a :FormattedRoute, b:FormattedRoute)=>{
             const route1 = a.path ? a.path.replace(/[.-]/, "") : "";
             const route2 = b.path ? b.path.replace(/[.-]/, "") : "";
             return route1>route2 ? 1 : -1;
         });
     }
 
-    public sortRouteGroups(routes) :Array<any> {
+    public sortRouteGroups(routes :RouteGrouping[]) :RouteGrouping[] {
         return routes.sort((a, b)=>{
             return a.tag<b.tag ? 1 : -1;
         });
     }
 
-    private async formatRoutes(routes :Route[], stripHidden ?:boolean) :Promise<any[]> {
+    private async formatRoutes(routes :Route[], stripHidden ?:boolean) :Promise<(FormattedRoute|RouteGrouping)[]> {
         const groupedRoutes :Map<string, any[]> = new Map();
-        const ungroupedRoutes :any[] = [];
+        const ungroupedRoutes :FormattedRoute[] = [];
 
         await asyncForEach(routes, async (route)=>{
             if(!(stripHidden && route.hidden)) {
-                const formattedObj = {
-                    method: route.method,
+                const formattedObj :FormattedRoute = {
+                    method: route.method.toString(),
                     path: route.path,
                     controller: route.controller,
-                    action: route.action,
+                    action: route.action.toString(),
                     policies: route.policies,
                     description: route.description,
                     isDeprecated: route.isDeprecated,
@@ -105,11 +105,11 @@ export class Routes {
                 }
             }
         });
-        const groupedRoutesArray = Array.from(groupedRoutes, ([tag, routes]) => ({tag, routes}));
+        const groupedRoutesArray :RouteGrouping[] = Array.from(groupedRoutes, ([tag, routes]) => ({tag, routes}));
         return [...ungroupedRoutes, ...this.sortRouteGroups(groupedRoutesArray)];
     }
 
-    private async cleanRouteParams(params :RouteParam[]) :Promise<void> {
+    private async cleanRouteParams(params :FormattedRouteParam[]) :Promise<void> {
         await asyncForEach(params, param =>cleanObject(param));
     }
 
@@ -127,7 +127,7 @@ export class Routes {
     }
 
     /** This should only run on startup so it's fine that it's not async */
-    public bindRotues<custom=ObjectOfAnything>({app, apolloCustom}:BindRoutesArgs<custom>) :void {
+    public bindRoutes<custom=ObjectOfAnything>({app, apolloCustom}:BindRoutesArgs<custom>) :void {
         this.routesArray.forEach(route =>{
             try{
                 if(route.excludedEnvironments && route.excludedEnvironments.includes(process.env.ENV)) {
