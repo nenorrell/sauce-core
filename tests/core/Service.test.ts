@@ -140,7 +140,61 @@ describe("Service", ()=> {
                     current: 3,
                     next: "https://someUrl.com/some/path?page=4&pageSize=1",
                     prev: "https://someUrl.com/some/path?page=2&pageSize=1",
-                    size: 1
+                    size: 5
+                }
+            });
+            done();
+        });
+
+        it("Should handle total in pagination", (done)=>{
+            const Apollo = mockApollo({
+                req: {
+                    query: {
+                        page: 2,
+                        pageSize: 1
+                    },
+                    path: "/some/path"
+                },
+                currentRoute: {
+                    queryParamKeys: ["page", "pageSize"],
+                    hasQueryParam: ()=>{
+                        return true;
+                    }
+                }
+            });
+            service = new Service(Apollo);
+            service["buildPaginationQuery"]();
+
+            const mockData = [
+                {
+                    firstName: "Bruce",
+                    lastName: "Wayne"
+                },
+                {
+                    firstName: "Clark",
+                    lastName: "Kent"
+                },
+                {
+                    firstName: "Tony",
+                    lastName: "Stark"
+                },
+                {
+                    firstName: "Steve",
+                    lastName: "Rodgers"
+                },
+                {
+                    firstName: "Miles",
+                    lastName: "Morales"
+                }
+            ];
+            expect(service.paginate(mockData, mockData.length)).to.deep.eq({
+                data: mockData,
+                page: {
+                    current: 2,
+                    next: "https://someUrl.com/some/path?page=3&pageSize=1",
+                    prev: "https://someUrl.com/some/path?page=1&pageSize=1",
+                    size: 5,
+                    totalPages: 5
                 }
             });
             done();

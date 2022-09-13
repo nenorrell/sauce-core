@@ -5,6 +5,7 @@ export type PaginatedObject = {
         prev :string;
         current :number;
         next :string;
+        totalPages ?:number;
     }
 }
 

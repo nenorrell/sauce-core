@@ -50,7 +50,7 @@ export class Service<custom=ObjectOfAnything> {
         throw new Error("Pagination params not configured for this route");
     }
 
-    public paginate(data :any[]) :PaginatedObject {
+    public paginate(data :any[], total ?:number) :PaginatedObject {
         const host = getAppUrl(this.config);
         const url = `${host}${this.req.path}`;
         const queryKeys = this.currentRoute.queryParamKeys;
@@ -71,10 +71,11 @@ export class Service<custom=ObjectOfAnything> {
         return {
             data,
             page: {
-                size: this.paging.pageSize,
+                size: data.length,
                 prev: prev,
                 current: this.paging.page,
-                next: next
+                next: next,
+                ...(total && {totalPages: Math.ceil(total/this.paging.pageSize)})
             }
         };
     }
