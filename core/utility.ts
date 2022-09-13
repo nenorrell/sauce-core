@@ -21,7 +21,7 @@ export const formatError = (status: number, details: any) :ErrorInterface => {
 
 // eslint-disable-next-line no-unused-vars
 type asyncForEachCB<A, B> = (item: A, index?: number, array?: A[])=>any;
-export const asyncForEach = async <A=any, B=any>(array: A[], callback:asyncForEachCB<A, B>) :Promise<B[]> => {
+export const asyncForEach = async <A=any, B=A>(array: A[], callback:asyncForEachCB<A, B>) :Promise<B[]> => {
     try {
         const allPromises = array.map(async (item: A, index: number, array: A[]) => callback(item, index, array));
         return await Promise.all(allPromises);
