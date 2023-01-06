@@ -1,11 +1,11 @@
 import {mock} from "sinon";
 import {expect} from "chai";
-import {mockApollo} from "../test-utils/mockApollo";
-import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../test-utils/mockRoute";
-import {RouteParam} from "../../core/routes/RouteParam";
-import { setPolicies } from "../../core/routes/Policies";
-import { Route } from "../../core";
-import { RouteValidator } from "../../core/routes/RouteValidator";
+import {mockApollo} from "../../test-utils/mockApollo";
+import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../../test-utils/mockRoute";
+import {RouteParam} from "../../../core/routes/RouteParam";
+import { setPolicies } from "../../../core/routes/Policies";
+import { Route } from "../../../core";
+import { RouteValidator } from "../../../core/routes/RouteValidator";
 
 let routeValidator :RouteValidator;
 

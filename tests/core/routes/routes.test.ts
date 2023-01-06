@@ -1,11 +1,11 @@
 import {expect} from "chai";
 import {spy, SinonSpy} from "sinon";
-import {Routes} from "../../core/routes/Routes";
-import {Route} from "../../core/routes/Route";
-import {RouteParam} from "../../core/routes/RouteParam";
-import {mockConfig} from "../test-utils/mockConfig";
-import * as policyMethods from "../../core/routes/Policies";
-import {App} from "../test-utils/testApp";
+import {Routes} from "../../../core/routes/Routes";
+import {Route} from "../../../core/routes/Route";
+import {RouteParam} from "../../../core/routes/RouteParam";
+import {mockConfig} from "../../test-utils/mockConfig";
+import * as policyMethods from "../../../core/routes/Policies";
+import {App} from "../../test-utils/testApp";
 
 describe("Routes", ()=> {
     let routes :Routes;

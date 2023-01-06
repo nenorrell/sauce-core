@@ -6,16 +6,11 @@
 
 Apollo core is the heart of the Apollo framework. Apollo is built on Express.js & Typescript.
 
-Essentially, it's Express.js with Typescript and a couple nice things out of the box like:
-
-* Simplified route handling, creation, and organization
-* Wire routes to controllers
-* Route policies
-* Route param data type enforcement
-    * Validate query params, body params, & path params all from your route definition
+See the Apollo-API docs (currently a WIP) here: https://apollo-api.gitlab.io/docs/
 
 ## Running core tests
 Easily run tests by running the `make test` command. Assumes Docker is installed.
 
 ## Example project
-See the example project consuming Apollo-core here: https://gitlab.com/apollo-api/template
+
+See the example project consuming Apollo-core here: https://gitlab.com/apollo-api/cli/-/tree/master/template
