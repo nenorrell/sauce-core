@@ -1,4 +1,3 @@
-import { ApolloConfig } from "../../resources/ApolloConfig";
 import {RouteParam} from "../RouteParam";
 
 /**
@@ -19,11 +18,11 @@ export const PaginationParams = [
         .setDescription("The page number you're requesting")
 ];
 
-export const getPaginationParams = (apolloConfig :ApolloConfig) => {
+export const getPaginationParams = (max ?:number) => {
     return [
         new RouteParam()
             .setName("pageSize")
-            .setDescription(`The amount of items to return for each page (max ${apolloConfig.pagination?.max || 50})`)
+            .setDescription(`The amount of items to return for each page (max ${max || 50})`)
             .setType("number")
             .setRequired(false),
 
