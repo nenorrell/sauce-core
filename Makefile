@@ -1,4 +1,4 @@
-NODE=14
+NODE=16
 UNIT_TEST := "tests/**/*.test.ts"
 INTEGRATION_TEST := "tests/**/*.int-test.ts"
 TEST := "tests/**/*test.ts"
@@ -47,9 +47,6 @@ integration-test-run:
 	node_modules/.bin/mocha \
 	--require ts-node/register \
 	$(INTEGRATION_TEST) -R spec --color --verbose --exit
-
-package:
-	/bin/sh ./bin/package.sh
 
 compile:
 	docker run -i --rm --name compile-apollo-api -e NODE_ENV=production -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run build

@@ -6,7 +6,7 @@ export {Responses, formatArrayResponse, formatErrorResponse, formatObjectRespons
 export {Route} from "./routes/Route";
 export {Routes} from "./routes/Routes";
 export {RouteParam} from "./routes/RouteParam";
-export {PaginationParams} from "./routes/canned/PaginationParams";
+export {PaginationParams, getPaginationParams} from "./routes/canned/PaginationParams";
 export {formatError} from "./utility";
 
 /** Types & Interfaces */
