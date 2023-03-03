@@ -26,6 +26,7 @@ interface BindRoutesArgs<custom> {
  */
 export class Routes {
     public routesArray :Route[];
+    private controllerMap :Map<string, Controller> = new Map();
 
     constructor(private config :ApolloConfig) {
         this.routesArray = config.routes;
@@ -113,17 +114,18 @@ export class Routes {
         await asyncForEach(params, param =>cleanObject(param));
     }
 
-    private getControllerClass(route :Route) :Controller {
-        let controller :Controller;
-        const extension = this.config.controllerExtension || "ts";
+    private addToControllerMap(route :Route) :void {
+        const path :string = this.getControllerPathFromRoute(route);
+        const controller :Controller = require(path);
+        this.controllerMap.set(path, controller);
+    }
 
+    private getControllerPathFromRoute(route :Route) :string {
+        const extension = this.config.controllerExtension || "ts";
         if(route.customControllerPath) {
-            controller = require(`${this.config.controllerDirectory}/${route.customControllerPath}`);
+            return `${this.config.controllerDirectory}/${route.customControllerPath}`;
         }
-        else{
-            controller = require(`${this.config.controllerDirectory}/${route.controller}/${route.controller}.controller.${extension}`);
-        }
-        return controller;
+        return `${this.config.controllerDirectory}/${route.controller}/${route.controller}.controller.${extension}`;
     }
 
     /** This should only run on startup so it's fine that it's not async */
@@ -134,16 +136,25 @@ export class Routes {
                     log(this.config, "info", yellow(`Excluding ${route.path} for this environment`));
                 }
                 else {
+                    // Add the controlelr to the map for easy/efficient lookup later
+                    this.addToControllerMap(route);
                     const policyList = setPolicies<custom>(this.config.policies);
 
-                    log(this.config, "debug", `Binding ${route.path}`);
+                    log(this.config, "debug", `Binding ${route.method.toString()} ${route.path}`);
+
+                    /**
+                     *  @TODO
+                     * Add middleware support to routes
+                     */
                     app[route.method](route.path, async (req :Request, res :Response, next :NextFunction)=>{
                         /**
                          * BEWARE, anything inside this block is inside of the
                          * request itself. Avoid non async logic from here on
                         */
                         try{
-                            let controller = this.getControllerClass(route);
+                            let controller = this.controllerMap.get(
+                                this.getControllerPathFromRoute(route)
+                            );
                             const apollo :Apollo<custom> = buildApolloObj({
                                 config: this.config,
                                 req,

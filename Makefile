@@ -1,4 +1,4 @@
-NODE=16
+NODE=18
 UNIT_TEST := "tests/**/*.test.ts"
 INTEGRATION_TEST := "tests/**/*.int-test.ts"
 TEST := "tests/**/*test.ts"

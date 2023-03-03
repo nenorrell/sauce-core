@@ -9,7 +9,6 @@
     "moduleResolution": "node",
     "target": "ES2018",
     "importHelpers": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": true,
     "outDir": "./dist"
