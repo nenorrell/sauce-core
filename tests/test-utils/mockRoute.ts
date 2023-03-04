@@ -1,12 +1,13 @@
-import {RouteParam, ParamDataTypes, ParamValidator} from "../../core/routes/RouteParam";
+import {RouteParam, ParamDataTypes} from "../../core/routes/RouteParam";
 import {Route} from "../../core/routes/Route";
+import { Request } from "express";
 
 interface IMockParam{
     name ?:string
     type ?: ParamDataTypes
     isRequired ?:boolean
     enumValues ?:Array<string | number | boolean>
-    customValidator ?:ParamValidator
+    customValidator ?:(paramConfig :RouteParam, requestParamValue :any, req :Request)=>void
 }
 
 export const mockRouteWithPathParams = (config :IMockParam[]) :Route =>{
