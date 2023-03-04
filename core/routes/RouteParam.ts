@@ -12,7 +12,7 @@ export class RouteParam {
     public type :ParamDataTypes;
     public enumValues :Array<string | number | boolean>;
     public description :string;
-    public customValidator ?:(paramConfig :RouteParam, requestParamValue :any, req :Request)=>void
+    public customValidator ?:(requestParamValue :any, req :Request)=>void
 
     public setName(name :string) :RouteParam {
         this.name = name;
@@ -38,7 +38,7 @@ export class RouteParam {
         this.description = description;
         return this;
     }
-    public setCustomValidator(validator :(paramConfig :RouteParam, requestParamValue :any, req :Request)=>void) :RouteParam {
+    public setCustomValidator(validator :(requestParamValue :any, req :Request)=>void) :RouteParam {
         this.customValidator = validator;
         return this;
     }

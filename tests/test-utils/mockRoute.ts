@@ -7,7 +7,7 @@ interface IMockParam{
     type ?: ParamDataTypes
     isRequired ?:boolean
     enumValues ?:Array<string | number | boolean>
-    customValidator ?:(paramConfig :RouteParam, requestParamValue :any, req :Request)=>void
+    customValidator ?:(requestParamValue :any, req :Request)=>void
 }
 
 export const mockRouteWithPathParams = (config :IMockParam[]) :Route =>{

@@ -225,7 +225,7 @@ describe("RouteValidator", ()=> {
                         name: "userId",
                         type: "number",
                         isRequired: true,
-                        customValidator: (paramConfig, value, req)=>{
+                        customValidator: (value, req)=>{
                             if(value !== 2) {
                                 throw formatError(400, "Custom validation failed");
                             }
@@ -517,7 +517,7 @@ describe("RouteValidator", ()=> {
                     name: "someParam",
                     type: "string",
                     isRequired: true,
-                    customValidator: (paramConfig, value, req)=>{
+                    customValidator: (value, req)=>{
                         if(value !== 2) {
                             throw formatError(400, "Custom validation failed");
                         }
@@ -711,7 +711,7 @@ describe("RouteValidator", ()=> {
                         .setName("test")
                         .setRequired(false)
                         .setType("string")
-                        .setCustomValidator((paramConfig, value, req)=>{
+                        .setCustomValidator((value, req)=>{
                             if(value !== 2) {
                                 throw formatError(400, "Custom validation failed");
                             }

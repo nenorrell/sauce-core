@@ -134,7 +134,7 @@ export class RouteValidator<custom=ObjectOfAnything> {
 
     private runCustomParamValidator(param :RouteParam, requestParamValue :any) :void {
         if(param.customValidator) {
-            param.customValidator(param, requestParamValue, this.req);
+            param.customValidator(requestParamValue, this.req);
         }
     }
 
