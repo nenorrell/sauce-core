@@ -1,4 +1,4 @@
-import {RouteParam, ParamDataTypes} from "../../core/routes/RouteParam";
+import {RouteParam, ParamDataTypes, ParamValidator} from "../../core/routes/RouteParam";
 import {Route} from "../../core/routes/Route";
 
 interface IMockParam{
@@ -6,6 +6,7 @@ interface IMockParam{
     type ?: ParamDataTypes
     isRequired ?:boolean
     enumValues ?:Array<string | number | boolean>
+    customValidator ?:ParamValidator
 }
 
 export const mockRouteWithPathParams = (config :IMockParam[]) :Route =>{
@@ -30,13 +31,16 @@ export const mockRouteParams = (config) :RouteParam[] =>{
     return config.map((param)=> mockRouteParam(param));
 };
 
-export const mockRouteParam = ({name, type, isRequired, enumValues}:IMockParam) :RouteParam =>{
+export const mockRouteParam = ({name, type, isRequired, enumValues, customValidator}:IMockParam) :RouteParam =>{
     const param = new RouteParam()
         .setName(name || "someParam")
         .setType(type !== undefined ? type : "string")
         .setRequired(isRequired || false);
     if(enumValues) {
         param.setEnumValues(enumValues);
+    }
+    if(customValidator) {
+        param.setCustomValidator(customValidator);
     }
     return param;
 };

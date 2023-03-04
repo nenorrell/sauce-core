@@ -4,7 +4,7 @@ import {mockApollo} from "../../test-utils/mockApollo";
 import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../../test-utils/mockRoute";
 import {RouteParam} from "../../../core/routes/RouteParam";
 import { setPolicies } from "../../../core/routes/Policies";
-import { Route } from "../../../core";
+import { formatError, Route } from "../../../core";
 import { RouteValidator } from "../../../core/routes/RouteValidator";
 
 let routeValidator :RouteValidator;
@@ -159,7 +159,7 @@ describe("RouteValidator", ()=> {
             expect(routeValidator["req"].params.someParam).to.be.true;
         });
 
-        it("Should throw error if param is required and not sent", async ()=>{
+        it("Should throw error if param is sent as the wrong type", async ()=>{
             const Apollo = mockApollo({
                 req: {
                     params: {
@@ -184,6 +184,64 @@ describe("RouteValidator", ()=> {
                 expect(e).to.deep.eq({
                     status: 400,
                     details: "GET /users/test is not a valid request path"
+                });
+            }
+        });
+
+        it("Should run customValidator", async ()=>{
+            const stub = mock();
+            const Apollo = mockApollo({
+                req: {
+                    params: {
+                        userId: 1
+                    },
+                    path: "/users/1"
+                },
+                currentRoute: mockRouteWithPathParams([
+                    {
+                        name: "userId",
+                        type: "number",
+                        isRequired: true,
+                        customValidator: stub
+                    }
+                ])
+            });
+
+            routeValidator = new RouteValidator(Apollo);
+            await routeValidator["validatePathParams"]();
+            expect(stub.called).to.equal(true);
+        });
+
+        it("customValidator should throw error", async ()=>{
+            const Apollo = mockApollo({
+                req: {
+                    params: {
+                        userId: 1
+                    },
+                    path: "/users/1"
+                },
+                currentRoute: mockRouteWithPathParams([
+                    {
+                        name: "userId",
+                        type: "number",
+                        isRequired: true,
+                        customValidator: (paramConfig, value, req)=>{
+                            if(value !== 2) {
+                                throw formatError(400, "Custom validation failed");
+                            }
+                        }
+                    }
+                ])
+            });
+
+            routeValidator = new RouteValidator(Apollo);
+            try {
+                await routeValidator["validatePathParams"]();
+            }
+            catch(err) {
+                expect(err).to.deep.eq({
+                    status: 400,
+                    details: "Custom validation failed"
                 });
             }
         });
@@ -424,12 +482,66 @@ describe("RouteValidator", ()=> {
                 });
             }
         });
+
+        it("Should run customValidator", async ()=>{
+            const stub = mock();
+            const Apollo = mockApollo({
+                req: {
+                    query: {
+                        someParam: "someParam"
+                    },
+                    path: "/some/route"
+                },
+                currentRoute: mockRouteWithQueryParams([{
+                    name: "someParam",
+                    type: "string",
+                    isRequired: true,
+                    customValidator: stub
+                }])
+            });
+
+            routeValidator = new RouteValidator(Apollo);
+            await routeValidator["validateQueryParams"]();
+            expect(stub.called).to.equal(true);
+        });
+
+        it("customValidator should throw error", async ()=>{
+            const Apollo = mockApollo({
+                req: {
+                    query: {
+                        someParam: "someParam"
+                    },
+                    path: "/some/route"
+                },
+                currentRoute: mockRouteWithQueryParams([{
+                    name: "someParam",
+                    type: "string",
+                    isRequired: true,
+                    customValidator: (paramConfig, value, req)=>{
+                        if(value !== 2) {
+                            throw formatError(400, "Custom validation failed");
+                        }
+                    }
+                }])
+            });
+
+            routeValidator = new RouteValidator(Apollo);
+            try {
+                await routeValidator["validateQueryParams"]();
+            }
+            catch(err) {
+                expect(err).to.deep.eq({
+                    status: 400,
+                    details: "Custom validation failed"
+                });
+            }
+        });
     });
 
     describe("validateReqBody()", ()=>{
         let paramsWithChildren;
 
-        before(()=>{
+        beforeEach(()=>{
             paramsWithChildren = [
                 new RouteParam()
                     .setName("name")
@@ -559,6 +671,62 @@ describe("RouteValidator", ()=> {
                 expect(e).to.deep.eq({
                     status: 400,
                     details: "Invalid param type for child2: Expected number but got string"
+                });
+            }
+        });
+
+        it("Should run customValidator", async ()=>{
+            const stub :any = mock();
+            const Apollo = mockApollo({
+                req: {
+                    body: {
+                        name: "test",
+                    },
+                    path: "/some/route"
+                },
+                currentRoute: mockRouteWithBodyParams([
+                    new RouteParam()
+                        .setName("test")
+                        .setRequired(false)
+                        .setType("string")
+                        .setCustomValidator(stub)
+                ])
+            });
+
+            routeValidator = new RouteValidator(Apollo);
+            await routeValidator["validateReqBody"]();
+            expect(stub.called).to.equal(true);
+        });
+
+        it("customValidator should throw error", async ()=>{
+            const Apollo = mockApollo({
+                req: {
+                    body: {
+                        name: "test",
+                    },
+                    path: "/some/route"
+                },
+                currentRoute: mockRouteWithBodyParams([
+                    new RouteParam()
+                        .setName("test")
+                        .setRequired(false)
+                        .setType("string")
+                        .setCustomValidator((paramConfig, value, req)=>{
+                            if(value !== 2) {
+                                throw formatError(400, "Custom validation failed");
+                            }
+                        })
+                ])
+            });
+
+            routeValidator = new RouteValidator(Apollo);
+            try{
+                await routeValidator["validateReqBody"]();
+            }
+            catch(e) {
+                expect(e).to.deep.eq({
+                    status: 400,
+                    details: "Custom validation failed"
                 });
             }
         });

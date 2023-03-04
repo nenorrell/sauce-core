@@ -1,5 +1,8 @@
+import { Request } from "express";
+
 export type ParamDataTypes = "boolean"|"number"|"string"|"object"|"array"|"enum";
 
+export type ParamValidator = (paramConfig :RouteParam, requestParamValue :any, req :Request)=>void;
 /**
  * Defines a route param for Apollo to pickup.
  * Could be a param in the path, body, or a query param */
@@ -10,6 +13,7 @@ export class RouteParam {
     public type :ParamDataTypes;
     public enumValues :Array<string | number | boolean>;
     public description :string;
+    public customValidator ?:ParamValidator
 
     public setName(name :string) :RouteParam {
         this.name = name;
@@ -33,6 +37,10 @@ export class RouteParam {
     }
     public setDescription(description :string) :RouteParam {
         this.description = description;
+        return this;
+    }
+    public setCustomValidator(validator :ParamValidator) :RouteParam {
+        this.customValidator = validator;
         return this;
     }
 }

@@ -50,6 +50,7 @@ export class RouteValidator<custom=ObjectOfAnything> {
                     const pathParam = this.req.params[param.name];
                     this.validatePathParamType(param, pathParam);
                     this.req.params[param.name] = this.convertType(param.type, pathParam);
+                    this.runCustomParamValidator(param, pathParam);
                 });
             }
         }
@@ -70,6 +71,7 @@ export class RouteValidator<custom=ObjectOfAnything> {
                         this.req.query[param.name] = this.convertType(param.type, queryParam);
                         this.validateEnumParam(param, queryParam);
                     }
+                    this.runCustomParamValidator(param, queryParam);
                 });
             }
         }
@@ -126,6 +128,13 @@ export class RouteValidator<custom=ObjectOfAnything> {
         if(typeof row[schemaLevel.name] != "undefined") {
             this.validateParamType(schemaLevel, row[schemaLevel.name]);
             row[schemaLevel.name] = this.convertType(schemaLevel.type, row[schemaLevel.name]);
+        }
+        this.runCustomParamValidator(schemaLevel, row[schemaLevel.name]);
+    }
+
+    private runCustomParamValidator(param :RouteParam, requestParamValue :any) :void {
+        if(param.customValidator) {
+            param.customValidator(param, requestParamValue, this.req);
         }
     }
 
