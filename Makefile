@@ -7,13 +7,13 @@ clean:
 	./bin/clean.sh
 
 install:
-	docker run -i --rm --name install-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm install ${PCKG}
+	docker run -i --rm --name install-sauce-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm install ${PCKG}
 
 lint:
-	docker run -i --rm --name lint-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint
+	docker run -i --rm --name lint-sauce-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint
 
 lint-fix:
-	docker run -i --rm --name lint-fix-apollo-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint:fix
+	docker run -i --rm --name lint-fix-sauce-api -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run lint:fix
 
 test: install run-tests lint
 
@@ -49,7 +49,7 @@ integration-test-run:
 	$(INTEGRATION_TEST) -R spec --color --verbose --exit
 
 compile:
-	docker run -i --rm --name compile-apollo-api -e NODE_ENV=production -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run build
+	docker run -i --rm --name compile-sauce-api -e NODE_ENV=production -u "node" -v `pwd`:/usr/src/app -w /usr/src/app node:${NODE} npm run build
 
 publish: test
 	npm publish --access=public

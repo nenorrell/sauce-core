@@ -1,24 +1,24 @@
-import { Apollo } from "./Apollo";
+import { Sauce } from "./Sauce";
 import { ObjectOfAnything } from "./resources/Common";
 import {PaginatedObject, PaginationQuery, PaginationConfig} from "./resources/PaginationTypes";
 import {getAppUrl, formatError} from "./utility";
 
 export class Service<custom=ObjectOfAnything> {
-    protected req :Apollo["req"];
-    protected currentRoute :Apollo["currentRoute"];
-    protected res :Apollo["res"];
-    protected next :Apollo["next"];
-    protected route :Apollo["currentRoute"];
-    protected config :Apollo["config"];
+    protected req :Sauce["req"];
+    protected currentRoute :Sauce["currentRoute"];
+    protected res :Sauce["res"];
+    protected next :Sauce["next"];
+    protected route :Sauce["currentRoute"];
+    protected config :Sauce["config"];
     protected paging :PaginationConfig & {page :number};
 
-    constructor(protected Apollo :Apollo<custom>) {
-        this.req = Apollo.req;
-        this.currentRoute = Apollo.currentRoute;
-        this.res = Apollo.res;
-        this.next = Apollo.next;
-        this.route = Apollo.currentRoute;
-        this.config = Apollo.config;
+    constructor(protected Sauce :Sauce<custom>) {
+        this.req = Sauce.req;
+        this.currentRoute = Sauce.currentRoute;
+        this.res = Sauce.res;
+        this.next = Sauce.next;
+        this.route = Sauce.currentRoute;
+        this.config = Sauce.config;
 
         this.paging = {
             page: 1,

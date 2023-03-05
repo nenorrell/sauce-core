@@ -1,8 +1,8 @@
-import { Apollo, Controller } from "../../../core";
+import { Sauce, Controller } from "../../../core";
 
 export class TestController extends Controller {
-    constructor(Apollo :Apollo) {
-        super(Apollo);
+    constructor(Sauce :Sauce) {
+        super(Sauce);
     }
 
     public index() :any {

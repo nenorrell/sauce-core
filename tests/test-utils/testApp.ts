@@ -25,7 +25,7 @@ export class App {
 
         new Routes(mockConfig()).bindRoutes({
             app: this.app,
-            apolloCustom: {},
+            sauceCustom: {},
         });
 
         this.app.get("*", (req, res)=>{
@@ -51,7 +51,7 @@ export class App {
     private setupHttpServer() :void {
         this.app.listen(this.port, () => {
             new Rocket(mockConfig()).launch();
-            console.log(`Apollo API has launched on port ${this.port}!`);
+            console.log(`Sauce API has launched on port ${this.port}!`);
         });
     }
 

@@ -1,10 +1,10 @@
 {
-  "name": "@apollo-api/core",
-  "version": "2.5.2",
-  "description": "Apollo API core functionality",
+  "name": "@sauce-api/core",
+  "version": "1.0.0",
+  "description": "Sauce API core functionality",
   "keywords": [
-    "Apollo",
-    "Apollo API"
+    "Sauce",
+    "Sauce API"
   ],
   "author": "royalewcheese",
   "license": "MIT",
@@ -20,7 +20,9 @@
     "lint:fix": "eslint --fix . --ext .ts"
   },
   "dependencies": {
-    "chalk": "^3.0.0",
+    "chalk": "^3.0.0"
+  },
+  "peerDependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
@@ -48,10 +50,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/apollo-api/core.git"
+    "url": "git+https://gitlab.com/sauce-api/core.git"
   },
   "bugs": {
-    "url": "https://gitlab.com/apollo-api/core/issues"
+    "url": "https://gitlab.com/sauce-api/core/issues"
   },
-  "homepage": "https://gitlab.com/apollo-api/core#readme"
+  "homepage": "https://gitlab.com/sauce-api/core#readme"
 }

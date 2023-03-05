@@ -3,7 +3,7 @@ import { Request } from "express";
 export type ParamDataTypes = "boolean"|"number"|"string"|"object"|"array"|"enum";
 
 /**
- * Defines a route param for Apollo to pickup.
+ * Defines a route param for Sauce to pickup.
  * Could be a param in the path, body, or a query param */
 export class RouteParam {
     public name :string;

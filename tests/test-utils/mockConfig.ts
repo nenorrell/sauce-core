@@ -1,8 +1,8 @@
-import {ApolloConfig, Route} from "../../core";
+import {SauceConfig, Route} from "../../core";
 import { ObjectOfAnything } from "../../core/resources/Common";
 import * as path from "path";
 
-type MockConfig = ApolloConfig<ObjectOfAnything, any>
+type MockConfig = SauceConfig<ObjectOfAnything, any>
 
 export const mockConfig = (overrides ?:Partial<MockConfig>) => {
     const config :MockConfig = {

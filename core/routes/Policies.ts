@@ -1,11 +1,11 @@
-import { Apollo } from "../Apollo";
-import {ApolloConfig} from "../resources/ApolloConfig";
+import { Sauce } from "../Sauce";
+import {SauceConfig} from "../resources/SauceConfig";
 import { ObjectOfAnything } from "../resources/Common";
 
-export type policyMethod<custom> = (Apollo :Apollo<custom>)=>Promise<void>;
+export type policyMethod<custom> = (Sauce :Sauce<custom>)=>Promise<void>;
 export type policyList<custom> = Map<String, policyMethod<custom>>;
 
-export function setPolicies<custom=ObjectOfAnything>(policies :ApolloConfig["policies"]) {
+export function setPolicies<custom=ObjectOfAnything>(policies :SauceConfig["policies"]) {
     const list :policyList<custom> = new Map();
     if(policies) {
         const policyKeys = Object.keys(policies);
@@ -17,10 +17,10 @@ export function setPolicies<custom=ObjectOfAnything>(policies :ApolloConfig["pol
 export class Policies<custom=ObjectOfAnything> {
     constructor(private policyList :policyList<custom>) {}
 
-    public async runPolicy(policyName :string, Apollo :Apollo<custom>) :Promise<void> {
+    public async runPolicy(policyName :string, Sauce :Sauce<custom>) :Promise<void> {
         try{
             const policy = this.policyList.get(policyName);
-            await policy(Apollo);
+            await policy(Sauce);
         }
         catch(err) {
             throw err;

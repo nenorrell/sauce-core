@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {mockApollo} from "../test-utils/mockApollo";
+import {mockSauce} from "../test-utils/mockSauce";
 import {Service} from "../../core/Service";
 import * as utility from "../../core/utility";
 import * as Sinon from "sinon";
@@ -8,7 +8,7 @@ let service :Service;
 describe("Service", ()=> {
     describe("buildPaginationQuery()", ()=>{
         it("Should build pagination properties properly for first page", (done)=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         page: 1,
@@ -22,7 +22,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service(Apollo);
+            service = new Service(Sauce);
 
             expect(service["buildPaginationQuery"]()).to.deep.equal({
                 limit: 25,
@@ -32,7 +32,7 @@ describe("Service", ()=> {
         });
 
         it("Should build pagination properties properly for subsequent pages", (done)=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         page: 3,
@@ -46,7 +46,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service(Apollo);
+            service = new Service(Sauce);
 
             expect(service["buildPaginationQuery"]()).to.deep.equal({
                 limit: 25,
@@ -56,7 +56,7 @@ describe("Service", ()=> {
         });
 
         it("Should respect the limit of pageSize", (done)=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         page: 3,
@@ -70,7 +70,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service(Apollo);
+            service = new Service(Sauce);
             try{
                 service["buildPaginationQuery"]();
             }
@@ -94,7 +94,7 @@ describe("Service", ()=> {
         });
 
         it("Should return pagination object properly", (done)=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         page: 3,
@@ -109,7 +109,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service(Apollo);
+            service = new Service(Sauce);
             service["buildPaginationQuery"]();
 
             const mockData = [
@@ -147,7 +147,7 @@ describe("Service", ()=> {
         });
 
         it("Should handle total in pagination", (done)=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         page: 2,
@@ -162,7 +162,7 @@ describe("Service", ()=> {
                     }
                 }
             });
-            service = new Service(Apollo);
+            service = new Service(Sauce);
             service["buildPaginationQuery"]();
 
             const mockData = [
