@@ -1,6 +1,6 @@
 {
   "name": "@sauce-api/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Sauce API core functionality",
   "keywords": [
     "Sauce",
@@ -55,5 +55,5 @@
   "bugs": {
     "url": "https://gitlab.com/sauce-api/core/issues"
   },
-  "homepage": "https://gitlab.com/sauce-api/core#readme"
+  "homepage": "https://sauce-api.gitlab.io/docs/"
 }
