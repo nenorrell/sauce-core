@@ -1,9 +1,9 @@
 import {green, yellow} from "chalk";
-import { ApolloConfig } from "./resources/ApolloConfig";
+import { SauceConfig } from "./resources/SauceConfig";
 import { log } from "./Logger";
 
 export class Rocket {
-    constructor(protected config :ApolloConfig) {}
+    constructor(protected config :SauceConfig) {}
 
     public launch() {
         return log(this.config, "debug", `${green(`

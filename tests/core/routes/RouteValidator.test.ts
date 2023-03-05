@@ -1,6 +1,6 @@
 import {mock} from "sinon";
 import {expect} from "chai";
-import {mockApollo} from "../../test-utils/mockApollo";
+import {mockSauce} from "../../test-utils/mockSauce";
 import {mockRouteWithPathParams, mockRouteWithQueryParams, mockRouteWithBodyParams} from "../../test-utils/mockRoute";
 import {RouteParam} from "../../../core/routes/RouteParam";
 import { setPolicies } from "../../../core/routes/Policies";
@@ -17,7 +17,7 @@ describe("RouteValidator", ()=> {
                 .setMethod("GET")
                 .setPolicies(["testPolicy"]);
 
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: "1"
@@ -32,8 +32,8 @@ describe("RouteValidator", ()=> {
                 }
             });
 
-            routeValidator = new RouteValidator(Apollo);
-            const policyList = setPolicies(Apollo.config.policies);
+            routeValidator = new RouteValidator(Sauce);
+            const policyList = setPolicies(Sauce.config.policies);
             await routeValidator.checkPolicies(policyList);
 
             expect(testPolicy.calledOnce).to.eq(true);
@@ -46,7 +46,7 @@ describe("RouteValidator", ()=> {
                 .setMethod("GET")
                 .setPolicies(["someOtherTestPolicy"]);
 
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: "1"
@@ -62,8 +62,8 @@ describe("RouteValidator", ()=> {
                 }
             });
 
-            routeValidator = new RouteValidator(Apollo);
-            const policyList = setPolicies(Apollo.config.policies);
+            routeValidator = new RouteValidator(Sauce);
+            const policyList = setPolicies(Sauce.config.policies);
             await routeValidator.checkPolicies(policyList);
 
             expect(testPolicy.calledOnce).to.eq(false);
@@ -73,7 +73,7 @@ describe("RouteValidator", ()=> {
 
     describe("validatePathParams()", ()=>{
         it("Should not throw error if param matches validations", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: "1"
@@ -86,13 +86,13 @@ describe("RouteValidator", ()=> {
                     isRequired: true
                 }])
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             const result = await routeValidator["validatePathParams"].bind(routeValidator)();
             expect(result).to.be.an("array");
         });
 
         it("Should not throw error if multiple params matches validations", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: "1",
@@ -113,12 +113,12 @@ describe("RouteValidator", ()=> {
                     }
                 ])
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validatePathParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should convert path param number string to number", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: "1"
@@ -133,13 +133,13 @@ describe("RouteValidator", ()=> {
                     }
                 ])
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validatePathParams"].bind(routeValidator)()).to.be.an("array");
             expect(routeValidator["req"].params.userId).to.be.a("number");
         });
 
         it("Should convert path param boolean string to bool", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         someParam: "true"
@@ -154,13 +154,13 @@ describe("RouteValidator", ()=> {
                     }
                 ])
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validatePathParams"].bind(routeValidator)()).to.be.an("array");
             expect(routeValidator["req"].params.someParam).to.be.true;
         });
 
         it("Should throw error if param is sent as the wrong type", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: "test"
@@ -176,7 +176,7 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validatePathParams"]();
             }
@@ -190,7 +190,7 @@ describe("RouteValidator", ()=> {
 
         it("Should run customValidator", async ()=>{
             const stub = mock();
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: 1
@@ -207,13 +207,13 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             await routeValidator["validatePathParams"]();
             expect(stub.called).to.equal(true);
         });
 
         it("customValidator should throw error", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     params: {
                         userId: 1
@@ -234,7 +234,7 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try {
                 await routeValidator["validatePathParams"]();
             }
@@ -249,7 +249,7 @@ describe("RouteValidator", ()=> {
 
     describe("validateQueryParams()", ()=>{
         it("Should not throw error if params match validations", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -263,12 +263,12 @@ describe("RouteValidator", ()=> {
                 }])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should not throw error if params match validations (multiple query params)", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam",
@@ -290,12 +290,12 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should not throw error if an optional param isn't sent", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -316,12 +316,12 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should convert path param number string to number", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         numberParam: "2"
@@ -336,13 +336,13 @@ describe("RouteValidator", ()=> {
                     }
                 ])
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
             expect(routeValidator["req"].query.numberParam).to.be.a("number");
         });
 
         it("Should convert path param boolean string to bool", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         booleanParam: "true"
@@ -357,13 +357,13 @@ describe("RouteValidator", ()=> {
                     }
                 ])
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
             expect(routeValidator["req"].query.booleanParam).to.be.true;
         });
 
         it("Should throw error if params are required and are not sent", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -384,7 +384,7 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validateQueryParams"]();
             }
@@ -397,7 +397,7 @@ describe("RouteValidator", ()=> {
         });
 
         it("Should throw error if params values do not match expected type", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam",
@@ -419,7 +419,7 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validateQueryParams"]();
             }
@@ -432,7 +432,7 @@ describe("RouteValidator", ()=> {
         });
 
         it("Should not throw error if param value is in enum choices", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         enumParam: "enumValue"
@@ -449,12 +449,12 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateQueryParams"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should throw error if param value is not in enum", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         enumParam: "enumValue"
@@ -471,7 +471,7 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validateQueryParams"]();
             }
@@ -485,7 +485,7 @@ describe("RouteValidator", ()=> {
 
         it("Should run customValidator", async ()=>{
             const stub = mock();
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -500,13 +500,13 @@ describe("RouteValidator", ()=> {
                 }])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             await routeValidator["validateQueryParams"]();
             expect(stub.called).to.equal(true);
         });
 
         it("customValidator should throw error", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     query: {
                         someParam: "someParam"
@@ -525,7 +525,7 @@ describe("RouteValidator", ()=> {
                 }])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try {
                 await routeValidator["validateQueryParams"]();
             }
@@ -567,7 +567,7 @@ describe("RouteValidator", ()=> {
         });
 
         it("Should not throw error if body params match validations", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -581,12 +581,12 @@ describe("RouteValidator", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateReqBody"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should not throw error if an optional param isn't sent", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -599,12 +599,12 @@ describe("RouteValidator", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateReqBody"].bind(routeValidator)()).to.be.an("array");
         });
 
         it("Should convert body param number string to number", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -617,13 +617,13 @@ describe("RouteValidator", ()=> {
                 },
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             expect(await routeValidator["validateReqBody"].bind(routeValidator)()).to.be.an("array");
             expect(routeValidator["req"].body.children.child2).to.be.a("number");
         });
 
         it("Should throw error if params are required and are not sent", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -636,7 +636,7 @@ describe("RouteValidator", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validateReqBody"]();
             }
@@ -649,7 +649,7 @@ describe("RouteValidator", ()=> {
         });
 
         it("Should throw error if params values do not match expected type", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -663,7 +663,7 @@ describe("RouteValidator", ()=> {
                 currentRoute: mockRouteWithBodyParams(paramsWithChildren)
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validateReqBody"]();
             }
@@ -677,7 +677,7 @@ describe("RouteValidator", ()=> {
 
         it("Should run customValidator", async ()=>{
             const stub :any = mock();
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -693,13 +693,13 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             await routeValidator["validateReqBody"]();
             expect(stub.called).to.equal(true);
         });
 
         it("customValidator should throw error", async ()=>{
-            const Apollo = mockApollo({
+            const Sauce = mockSauce({
                 req: {
                     body: {
                         name: "test",
@@ -719,7 +719,7 @@ describe("RouteValidator", ()=> {
                 ])
             });
 
-            routeValidator = new RouteValidator(Apollo);
+            routeValidator = new RouteValidator(Sauce);
             try{
                 await routeValidator["validateReqBody"]();
             }

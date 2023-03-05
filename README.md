@@ -1,16 +1,20 @@
-[![pipeline status](https://gitlab.com/apollo-api/core/badges/master/pipeline.svg)](https://gitlab.com/apollo-api/core/commits/master)
-[![coverage report](https://gitlab.com/apollo-api/core/badges/master/coverage.svg)](https://gitlab.com/apollo-api/core/-/commits/master)
+[![pipeline status](https://gitlab.com/sauce-api/core/badges/master/pipeline.svg)](https://gitlab.com/sauce-api/core/commits/master)
+[![coverage report](https://gitlab.com/sauce-api/core/badges/master/coverage.svg)](https://gitlab.com/sauce-api/core/-/commits/master)
 
-# Apollo API
-<img src="https://gitlab.com/apollo-api/core/-/raw/master/apollo-logo-earth-bg.png" alt="drawing" width="300px"/>
+# Sauce API
+[<img src="https://gitlab.com/sauce-api/core/-/raw/master/sauce-logo.png" width="400">][docs-url]
 
-Apollo core is the heart of the Apollo framework. Apollo is built on Express.js & Typescript.
+Sauce core is the heart of the Sauce framework. Sauce is built on Express.js & Typescript.
 
-See the Apollo-API docs (currently a WIP) here: https://apollo-api.gitlab.io/docs/
+See the Sauce-API docs (currently a WIP) here: https://sauce-api.gitlab.io/docs/
 
 ## Running core tests
 Easily run tests by running the `make test` command. Assumes Docker is installed.
 
 ## Example project
 
-See the example project consuming Apollo-core here: https://gitlab.com/apollo-api/cli/-/tree/master/template
+See the example project consuming Sauce-core here: https://gitlab.com/sauce-api/cli/-/tree/master/template
+
+
+[logo-url]: https://gitlab.com/sauce-api/core/-/raw/master/sauce-logo.png
+[docs-url]: https://sauce-api.gitlab.io/docs/

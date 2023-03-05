@@ -350,7 +350,7 @@ describe("Routes", ()=> {
         it("Should set policies while building routes", (done)=>{
             routes.bindRoutes({
                 app: new App(false).getApp(),
-                apolloCustom: {},
+                sauceCustom: {},
             });
 
             expect(setPolicySpy.calledOnceWithExactly(config.policies)).to.eq(true);

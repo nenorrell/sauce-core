@@ -1,19 +1,19 @@
 import {Application, NextFunction, Response, Request} from "express";
-import {ApolloConfig} from "./resources/ApolloConfig";
+import {SauceConfig} from "./resources/SauceConfig";
 import {ObjectOfAnything} from "./resources/Common";
 import {Route} from "./routes/Route";
 
-export type Apollo<custom=ObjectOfAnything> = {
+export type Sauce<custom=ObjectOfAnything> = {
     req :Request;
     res :Response;
     next :NextFunction;
     app :Application;
     currentRoute :Route;
-    config :ApolloConfig;
+    config :SauceConfig;
     custom ?:custom
 }
-export const buildApolloObj = <custom=ObjectOfAnything>({req, res, next, app, currentRoute, config, custom}:Apollo<custom>) :Apollo<custom> => {
-    let Apollo :Apollo<custom> = {
+export const buildSauceObj = <custom=ObjectOfAnything>({req, res, next, app, currentRoute, config, custom}:Sauce<custom>) :Sauce<custom> => {
+    let Sauce :Sauce<custom> = {
         req,
         res,
         next,
@@ -22,10 +22,10 @@ export const buildApolloObj = <custom=ObjectOfAnything>({req, res, next, app, cu
         config
     };
     if(custom) {
-        Apollo = {
-            ...Apollo,
+        Sauce = {
+            ...Sauce,
             custom
         };
     }
-    return Apollo;
+    return Sauce;
 };

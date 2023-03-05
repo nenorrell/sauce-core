@@ -1,7 +1,7 @@
 import {ObjectOfAnything} from "./Common";
 import {PaginatedObject} from "./PaginationTypes";
 
-export type ApolloResponseType = IPaginatedResponse | IResponse | IArrayResponse | IErrorResponse;
+export type SauceResponseType = IPaginatedResponse | IResponse | IArrayResponse | IErrorResponse;
 
 interface ICommonResponse{
     code :number

@@ -1,5 +1,5 @@
 /** CORE */
-export {Apollo, buildApolloObj} from "./Apollo";
+export {Sauce, buildSauceObj} from "./Sauce";
 export {Controller} from "./Controller";
 export {Service} from "./Service";
 export {Responses, formatArrayResponse, formatErrorResponse, formatObjectResponse, formatPaginatedResponse} from "./Responses";
@@ -10,11 +10,11 @@ export {PaginationParams, getPaginationParams} from "./routes/canned/PaginationP
 export {formatError} from "./utility";
 
 /** Types & Interfaces */
-export {ApolloConfig} from "./resources/ApolloConfig";
+export {SauceConfig} from "./resources/SauceConfig";
 export {ErrorInterface} from "./resources/ErrorInterface";
-export {ApolloResponseType, IArrayResponse, IErrorResponse, IPaginatedResponse} from "./resources/IResponses";
+export {SauceResponseType, IArrayResponse, IErrorResponse, IPaginatedResponse} from "./resources/IResponses";
 export {PaginatedObject, PaginationConfig, PaginationQuery} from "./resources/PaginationTypes";
 export {FormattedRoute, FormattedRouteParam, RouteGrouping} from "./@types/Routes.types";
 
-/** Apollo Rocket */
+/** Sauce Rocket */
 export {Rocket} from "./Rocket";

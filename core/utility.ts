@@ -1,5 +1,5 @@
 import {ErrorInterface} from "./resources/ErrorInterface";
-import {ApolloConfig} from "./resources/ApolloConfig";
+import {SauceConfig} from "./resources/SauceConfig";
 
 export const cleanObject = async (obj: any) :Promise<void> => {
     asyncForEach(Object.keys(obj), async key =>{
@@ -31,7 +31,7 @@ export const asyncForEach = async <A=any, B=A>(array: A[], callback:asyncForEach
     }
 };
 
-export const getAppUrl = (config :ApolloConfig) :string => {
+export const getAppUrl = (config :SauceConfig) :string => {
     if(config.environments[process.env.ENV]) {
         return config.environments[process.env.ENV].url;
     }

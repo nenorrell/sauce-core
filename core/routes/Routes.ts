@@ -1,10 +1,10 @@
 import {Route} from "./Route";
 import {asyncForEach, cleanObject} from "../utility";
-import {ApolloConfig} from "../resources/ApolloConfig";
+import {SauceConfig} from "../resources/SauceConfig";
 import { log } from "../Logger";
 import { yellow } from "chalk";
 import { Application, NextFunction, Request, Response } from "express";
-import { Apollo, buildApolloObj } from "../Apollo";
+import { Sauce, buildSauceObj } from "../Sauce";
 import { Controller } from "../Controller";
 import { ObjectOfAnything } from "../resources/Common";
 import { setPolicies } from "./Policies";
@@ -13,7 +13,7 @@ import { FormattedRoute, FormattedRouteParam, RouteGrouping } from "../@types/Ro
 
 interface BindRoutesArgs<custom> {
     app :Application
-    apolloCustom :Apollo<custom>["custom"]
+    sauceCustom :Sauce<custom>["custom"]
 }
 
 /**
@@ -28,7 +28,7 @@ export class Routes {
     public routesArray :Route[];
     private controllerMap :Map<string, Controller> = new Map();
 
-    constructor(private config :ApolloConfig) {
+    constructor(private config :SauceConfig) {
         this.routesArray = config.routes;
     }
 
@@ -129,7 +129,7 @@ export class Routes {
     }
 
     /** This should only run on startup so it's fine that it's not async */
-    public bindRoutes<custom=ObjectOfAnything>({app, apolloCustom}:BindRoutesArgs<custom>) :void {
+    public bindRoutes<custom=ObjectOfAnything>({app, sauceCustom}:BindRoutesArgs<custom>) :void {
         this.routesArray.forEach(route =>{
             try{
                 if(route.excludedEnvironments && route.excludedEnvironments.includes(process.env.ENV)) {
@@ -155,20 +155,20 @@ export class Routes {
                             let controller = this.controllerMap.get(
                                 this.getControllerPathFromRoute(route)
                             );
-                            const apollo :Apollo<custom> = buildApolloObj({
+                            const sauce :Sauce<custom> = buildSauceObj({
                                 config: this.config,
                                 req,
                                 res,
                                 next,
                                 app,
                                 currentRoute: route,
-                                custom: apolloCustom
+                                custom: sauceCustom
                             });
 
                             const controllerClassName = Object.keys(controller)[0];
-                            controller = new controller[controllerClassName](apollo);
+                            controller = new controller[controllerClassName](sauce);
 
-                            const routeValidator = new RouteValidator(apollo);
+                            const routeValidator = new RouteValidator(sauce);
                             await routeValidator.runValidations();
                             await routeValidator.checkPolicies(policyList);
 

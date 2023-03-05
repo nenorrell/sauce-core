@@ -2,13 +2,13 @@ import {expect} from "chai";
 import {mock} from "sinon";
 import { mockConfig } from "../test-utils/mockConfig";
 import { mockRouteWithPathParams } from "../test-utils/mockRoute";
-import { buildApolloObj } from "../../core";
+import { buildSauceObj } from "../../core";
 
-describe("Apollo Tests", ()=> {
-    describe("buildApolloObj()", ()=>{
-        let apolloObj;
+describe("Sauce Tests", ()=> {
+    describe("buildSauceObj()", ()=>{
+        let sauceObj;
         beforeEach(()=>{
-            apolloObj = {
+            sauceObj = {
                 req: {
                     params: {
                         userId: "1"
@@ -27,25 +27,25 @@ describe("Apollo Tests", ()=> {
             };
         });
 
-        it("Should build Apollo object without custom", done =>{
-            const apollo = buildApolloObj(apolloObj);
-            expect(apollo).to.deep.equal({
-                ...apolloObj
+        it("Should build Sauce object without custom", done =>{
+            const sauce = buildSauceObj(sauceObj);
+            expect(sauce).to.deep.equal({
+                ...sauceObj
             });
             done();
         });
 
-        it("Should add custom object to Apollo object", done =>{
+        it("Should add custom object to Sauce object", done =>{
             const custom = {
                 somethingHere: mock(),
                 someOtherThing: "Some string"
             };
-            const apollo = buildApolloObj({
-                ...apolloObj,
+            const sauce = buildSauceObj({
+                ...sauceObj,
                 custom
             });
-            expect(apollo).to.deep.equal({
-                ...apolloObj,
+            expect(sauce).to.deep.equal({
+                ...sauceObj,
                 custom
             });
             done();

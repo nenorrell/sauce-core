@@ -1,6 +1,6 @@
 import {RouteParam} from "./RouteParam";
 import {HttpMethod} from "../resources/Common";
-import {ApolloResponseType} from "../resources/IResponses";
+import {SauceResponseType} from "../resources/IResponses";
 
 /** Configure a route for the application */
 export class Route {
@@ -21,7 +21,7 @@ export class Route {
     public excludedEnvironments :string[];
     public hidden :boolean;
     public queryParamKeys :string[] = [];
-    public exampleResponse :ApolloResponseType;
+    public exampleResponse :SauceResponseType;
     public isDeprecated :boolean = false;
 
     public setMethod(method :HttpMethod) :Route {
@@ -98,7 +98,7 @@ export class Route {
         return this;
     }
 
-    public setExampleResponse(exampleResponse :ApolloResponseType) :Route {
+    public setExampleResponse(exampleResponse :SauceResponseType) :Route {
         this.exampleResponse = exampleResponse;
         return this;
     }
