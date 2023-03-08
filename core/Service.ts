@@ -3,6 +3,9 @@ import { ObjectOfAnything } from "./resources/Common";
 import {PaginatedObject, PaginationQuery, PaginationConfig} from "./resources/PaginationTypes";
 import {getAppUrl, formatError} from "./utility";
 
+/**
+ * A Service class that provides utility functions for handling requests
+ */
 export class Service<custom=ObjectOfAnything> {
     protected req :Sauce["req"];
     protected currentRoute :Sauce["currentRoute"];
@@ -27,11 +30,19 @@ export class Service<custom=ObjectOfAnything> {
         };
     }
 
-
+    /**
+     * Check if the current route has pagination query params
+     * @return {boolean} - Returns true if current route has pagination query params, false otherwise
+     */
     public routeHasPagination() :boolean {
         return this.currentRoute.hasQueryParam("page") && this.currentRoute.hasQueryParam("pageSize");
     }
 
+    /**
+     * Builds a pagination query object from the request query params
+     * @throws Will throw an error if pagination query params not configured for the route
+     * @return {PaginationQuery} - Returns a pagination query object
+     */
     public buildPaginationQuery() :PaginationQuery {
         if(this.routeHasPagination()) {
             this.paging.page = <any>this.req.query["page"] || this.paging.page;
@@ -50,6 +61,12 @@ export class Service<custom=ObjectOfAnything> {
         throw new Error("Pagination params not configured for this route");
     }
 
+    /**
+     * Builds a paginated object from an array of data and total number of records
+     * @param {any[]} data - The array of data to paginate
+     * @param {number} [total] - The total number of records
+     * @return {PaginatedObject} - Returns a paginated object
+     */
     public paginate(data :any[], total ?:number) :PaginatedObject {
         const host = getAppUrl(this.config);
         const url = `${host}${this.req.path}`;

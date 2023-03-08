@@ -12,7 +12,7 @@ export {formatError} from "./utility";
 /** Types & Interfaces */
 export {SauceConfig} from "./resources/SauceConfig";
 export {ErrorInterface} from "./resources/ErrorInterface";
-export {SauceResponseType, IArrayResponse, IErrorResponse, IPaginatedResponse} from "./resources/IResponses";
+export {SauceResponseType, IResponse, IArrayResponse, IErrorResponse, IPaginatedResponse} from "./resources/IResponses";
 export {PaginatedObject, PaginationConfig, PaginationQuery} from "./resources/PaginationTypes";
 export {FormattedRoute, FormattedRouteParam, RouteGrouping} from "./@types/Routes.types";
 

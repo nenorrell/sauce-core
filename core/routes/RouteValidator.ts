@@ -12,6 +12,10 @@ export class RouteValidator<custom=ObjectOfAnything> {
     protected route :Sauce["currentRoute"];
     protected config :Sauce["config"];
 
+    /**
+     * @param {Sauce<custom>} Sauce instance of Sauce class.
+     * @return {void}
+     */
     constructor(protected Sauce :Sauce<custom>) {
         this.req = Sauce.req;
         this.currentRoute = Sauce.currentRoute;
@@ -21,6 +25,11 @@ export class RouteValidator<custom=ObjectOfAnything> {
         this.config = Sauce.config;
     }
 
+    /**
+     * Checks the policies for the current route.
+     * @param {policyList<custom>} policyList policies defined for the route.
+     * @return {Promise<void>}
+     */
     public async checkPolicies(policyList :policyList<custom>) :Promise<void> {
         const policies = new Policies<custom>(policyList);
         if (this.route.policies) {
@@ -30,6 +39,10 @@ export class RouteValidator<custom=ObjectOfAnything> {
         }
     }
 
+    /**
+     * Runs validations for path, query and request body params.
+     * @return {Promise<void>}
+     */
     public async runValidations() :Promise<void> {
         try {
             await Promise.all([
@@ -43,6 +56,10 @@ export class RouteValidator<custom=ObjectOfAnything> {
         }
     }
 
+    /**
+     * Validates the path parameters.
+     * @return {Promise<RouteParam[]>}
+     */
     private async validatePathParams() :Promise<RouteParam[]> {
         try {
             if(this.route.pathParams) {
@@ -59,6 +76,10 @@ export class RouteValidator<custom=ObjectOfAnything> {
         }
     }
 
+    /**
+     * Validates the query parameters.
+     * @return {Promise<RouteParam[]>}
+     */
     private async validateQueryParams() :Promise<RouteParam[]> {
         try{
             if(this.route.queryParams) {
@@ -80,6 +101,10 @@ export class RouteValidator<custom=ObjectOfAnything> {
         }
     }
 
+    /**
+     * Validates the request body parameters.
+     * @return {Promise<RouteParam[]>}
+    */
     private async validateReqBody() :Promise<RouteParam[]> {
         try{
             if(this.route.bodySchema) {
